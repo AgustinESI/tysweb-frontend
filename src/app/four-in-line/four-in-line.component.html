@@ -1,0 +1,15 @@
+<p>four-in-line works!</p>
+<div class="board-container">
+  <div class="board">
+    <div *ngFor="let row of match.board; let i = index" class="row">
+      <button
+        (click)="add(i, j)"
+        *ngFor="let col of row; let j = index"
+        class="cell"
+      >
+        <span *ngIf="col">{{ col }}</span>
+        <span *ngIf="!col"></span>
+      </button>
+    </div>
+  </div>
+</div>

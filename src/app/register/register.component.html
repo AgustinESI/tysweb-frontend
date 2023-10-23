@@ -1,0 +1,62 @@
+<main class="form-signin text-center">
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="doRegister()"
+    class="mt-4"
+    autocomplete="off"
+  >
+    <h1 class="h3 mb-3 fw-normal">Register</h1>
+    <div class="form-floating">
+      <input
+        autocomplete="nope"
+        type="text"
+        class="form-control"
+        formControlName="name"
+        id="floatingInputName"
+        placeholder="username"
+      /><br /><br />
+      <label for="floatingInputName">User</label>
+    </div>
+
+    <div class="form-floating">
+      <input
+        type="email"
+        required
+        class="form-control"
+        formControlName="email"
+        id="floatingInputEmail"
+        placeholder="name@example.com"
+      /><br /><br />
+      <label for="floatingInputEmail">Email address</label>
+    </div>
+
+    <div class="form-floating">
+      <input
+        type="password"
+        class="form-control"
+        formControlName="pwd1"
+        id="floatingPassword1"
+        placeholder="Password"
+      />
+      <label for="floatingPassword1">Password 1</label>
+    </div>
+
+    <div class="form-floating">
+      <input
+        type="password"
+        class="form-control"
+        formControlName="pwd2"
+        id="floatingPassword2"
+        placeholder="Password"
+      />
+      <label for="floatingPassword2">Password 2</label>
+    </div>
+
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+  </form>
+</main>
+
+<!-- Using *ngIf to toggle display (showToast = true initially) -->
+<ngb-alert #alert id="modal-alert" [type]="alertType" *ngIf="showAlert">
+  {{ messageAlert }}
+</ngb-alert>

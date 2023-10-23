@@ -1,0 +1,55 @@
+<main class="form-signin text-center">
+  <form
+    *ngIf="!login"
+    [formGroup]="loginForm"
+    (ngSubmit)="doLogin()"
+    class="mt-4"
+    autocomplete="off"
+  >
+    <h1 class="h3 mb-3 fw-normal">Login</h1>
+    <div class="form-floating">
+      <input
+        type="email"
+        required
+        class="form-control"
+        formControlName="email"
+        id="floatingInputEmail"
+        placeholder="name@example.com"
+      /><br /><br />
+      <label for="floatingInputEmail">Email address</label>
+    </div>
+
+    <div class="form-floating">
+      <input
+        type="password"
+        class="form-control"
+        formControlName="pwd"
+        id="floatingPassword"
+        placeholder="Password"
+      />
+      <label for="floatingPassword">Password</label>
+    </div>
+
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+  </form>
+
+  <div *ngIf="login" class="d-flex align-items-center justify-content-center">
+    <div class="text-center row">
+      <div class="col-md-12">
+        <img src="../../assets/lynx-no-bg.png" alt="" class="img-fluid" />
+      </div>
+      <div class="col-md-12 mt-5">
+        <p class="fs-3">
+          <span class="text-danger">Opps!</span> u are already loged as
+          {{ userName }}.
+        </p>
+        <a href="index.html" class="btn btn-primary">Go Home</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Using *ngIf to toggle display (showToast = true initially) -->
+<ngb-alert #alert id="modal-alert" [type]="alertType" *ngIf="showAlert">
+  {{ messageAlert }}
+</ngb-alert>

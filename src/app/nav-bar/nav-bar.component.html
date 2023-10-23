@@ -1,0 +1,53 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css"
+/>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="../assets/logo-no-bg.png" width="150" height="90" alt="" />
+  </a>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="register">Register</a>
+      </li>
+      <li>
+        <a class="nav-link" routerLink="login">Login</a>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdownMenuLink"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Play
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" routerLink="games">Play 4 In Line</a>
+          <a class="dropdown-item" routerLink="games">Play Hanged Game</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="m-1" *ngIf="user_name">
+    <p>Login as {{ user_name }}</p>
+  </div>
+  <div class="m-5" *ngIf="user_name">
+    <button class="btn btn-danger btn-sm" (click)="closeSession()" >
+      Close <i class="fas fa-times"></i>
+    </button>
+  </div>
+</nav>
+
+
+<!-- Using *ngIf to toggle display (showToast = true initially) -->
+<ngb-alert #alert id="modal-alert" [type]="alertType" *ngIf="showAlert">
+  {{ messageAlert }}
+</ngb-alert>
