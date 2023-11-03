@@ -1,0 +1,7 @@
+export enum MessageTypes {
+    INDENT = 'INDENT',
+    PRIVATE_MESSAGE = 'PRIVATE.MESSAGE',
+    NEW_USER = 'NEW.USER',
+    WELCOME = 'WELCOME',
+    CLOSED_SESSION = 'CLOSED.SESSION',
+}

@@ -4,6 +4,7 @@ import { FourInLineComponent } from './four-in-line/four-in-line.component';
 import { RegisterComponent } from './register/register.component';
 import { AlertComponent } from './alert/alert.component';
 import { LoginComponent } from './login/login.component';
+import { ChatComponent } from './chat/chat.component';
 
 
 const routes: Routes = [
@@ -11,6 +12,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'alert', component: AlertComponent },
+  { path: 'chat', component: ChatComponent },
 ];
 
 @NgModule({
