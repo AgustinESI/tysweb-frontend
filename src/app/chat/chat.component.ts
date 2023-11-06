@@ -61,7 +61,18 @@ export class ChatComponent {
         let content = data.content;
         let message = "<strong>" + sender + "</strong>: " + content;
 
-        this._printMessageTheir(message);
+        let _messages = this.messages_list_by_receiver.get(sender);
+        if (!_messages) {
+          _messages = [];
+          _messages.push(
+            '<div class="media w-50 mb-3"> <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle" /> <div class="media-body ml-3"> <div class="bg-light rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-muted"> ' + message + '</p> </div> </div> </div>'
+          );
+          this.messages_list_by_receiver.set(sender, _messages);
+        } else {
+          this._printMessageTheir(message);
+        }
+
+
       }
 
       if (data.type == MessageTypes.NEW_USER) {
@@ -82,7 +93,10 @@ export class ChatComponent {
 
     this.ws.onclose = (event) => {
       console.log('WebSocket connection closed:', event);
-      // Handle WebSocket connection closure.
+      if (this.ws) this.ws.close();
+      this.users_list = this.users_list.filter((user) => user.name !== this.receiver);
+      this.messages_list_by_receiver.delete(this.receiver);
+      this.receiver = '';
     };
 
   }
@@ -96,6 +110,10 @@ export class ChatComponent {
       '<div class="media w-50 ml-auto mb-3"> <div class="media-body"> <div class="bg-primary rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-white"> ' + message + ' </p> </div> </div> </div>'
     );
     this.messages_list_by_receiver.set(this.receiver, _messages);
+
+    const scrollableDiv = document.getElementById("chat") as HTMLDivElement;
+    const scrollAmount = 1000000000000;
+    scrollableDiv.scrollTop += scrollAmount;
   }
 
   _printMessageTheir(message: string) {
@@ -110,6 +128,10 @@ export class ChatComponent {
       );
       this.messages_list_by_receiver.set(this.receiver, _messages);
     }
+
+    const scrollableDiv = document.getElementById("chat") as HTMLDivElement;
+    const scrollAmount = 1000000000000;
+    scrollableDiv.scrollTop += scrollAmount;
   }
 
   _addUser(name: string) {
@@ -122,8 +144,21 @@ export class ChatComponent {
   getReceiver(name: string) {
     console.log('---------> ' + name);
     this.receiver = name;
-  }
 
+
+    if (this.receiver) {
+      let _messages = this.messages_list_by_receiver.get(this.receiver);
+      if (!_messages) {
+        _messages = [];
+      }
+
+      _messages.push(
+        '<div class="media w-50 ml-auto mb-3"> <div class="media-body"> <div class="bg-secondary rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-white"> Chatting with: ' + this.receiver + ' </p> </div> </div> </div>'
+      );
+      this.messages_list_by_receiver.set(this.receiver, _messages);
+    }
+
+  }
 
   _sendMessage(message: string) {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
@@ -169,6 +204,10 @@ export class ChatComponent {
   ngOnDestroy() {
     // Clean up when the component is destroyed
     if (this.ws) this.ws.close();
+    this.users_list = this.users_list.filter((user) => user.name !== this.receiver);
+    this.messages_list_by_receiver.delete(this.receiver);
+    this.receiver = '';
+
   }
 
 

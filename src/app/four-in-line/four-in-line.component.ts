@@ -16,22 +16,9 @@ export class FourInLineComponent {
   add(row: number, col: number) {
     console.log('File:' + row + ' Col:' + col);
 
-    if (this.availableAdd(row)) {
-      this.match.board[row][col] = 'X';
-    } else {
-      console.log('Not availablle movement');
-    }
-  }
-
-  availableAdd(col: number): boolean {
-    /*
-        for (let i = 0; i < this.match.board.length; i++) {
-          console.log("Block statement execution no." + i);
-        }
-    */
-    return true;
-
+    this.match.board[row][col] = 'X';
 
   }
+
 
 }

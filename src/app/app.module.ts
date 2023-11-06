@@ -14,6 +14,7 @@ import { AlertComponent } from './alert/alert.component';
 import { LoginComponent } from './login/login.component';
 import { ChatComponent } from './chat/chat.component';
 import { FormsModule } from '@angular/forms';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FormsModule } from '@angular/forms';
     FooterComponent,
     AlertComponent,
     LoginComponent,
-    ChatComponent
+    ChatComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
