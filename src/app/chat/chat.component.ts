@@ -10,7 +10,7 @@ import { UserChat } from '../user-chat';
 })
 export class ChatComponent {
 
-  private websocketURL: string = 'ws://localhost:8080/ws-matches';
+  private websocketURL: string = 'ws://localhost:8080/ws-chat';
   private ws: WebSocket | undefined;
   public user_name: string = '';
   public users_list: UserChat[] = [];
@@ -41,7 +41,6 @@ export class ChatComponent {
     this.ws = new WebSocket(this.websocketURL);
 
     this.ws.onopen = () => {
-      console.log('WebSocket connection opened');
       let msg = {
         type: MessageTypes.INDENT,
         name: this.user_name,
@@ -84,7 +83,6 @@ export class ChatComponent {
         let usuarios = data.users;
         for (let i = 0; i < usuarios.length; i++) {
           let name = usuarios[i];
-          console.log(name);
           this._addUser(name);
         }
       }
@@ -92,7 +90,6 @@ export class ChatComponent {
     };
 
     this.ws.onclose = (event) => {
-      console.log('WebSocket connection closed:', event);
       if (this.ws) this.ws.close();
       this.users_list = this.users_list.filter((user) => user.name !== this.receiver);
       this.messages_list_by_receiver.delete(this.receiver);
@@ -107,7 +104,7 @@ export class ChatComponent {
       _messages = [];
     }
     _messages.push(
-      '<div class="media w-50 ml-auto mb-3"> <div class="media-body"> <div class="bg-primary rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-white"> ' + message + ' </p> </div> </div> </div>'
+      '<div class="message-our media w-50 ml-auto mb-3"> <div class="media-body"> <div class="bg-primary rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-white">' + message + '</p> </div> <p class="small text-muted">' + this.formatHour() + ' | ' + this.formatDate(new Date()) + '</p> </div> </div>'
     );
     this.messages_list_by_receiver.set(this.receiver, _messages);
 
@@ -124,7 +121,7 @@ export class ChatComponent {
       }
 
       _messages.push(
-        '<div class="media w-50 mb-3"> <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle" /> <div class="media-body ml-3"> <div class="bg-light rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-muted"> ' + message + '</p> </div> </div> </div>'
+        '<div class="media w-50 mb-3"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle"> <div class="media-body ml-3"> <div class="bg-light rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-muted">' + message + '</p> </div> <p class="small text-muted">' + this.formatHour() + ' | ' + this.formatHour() + '</p> </div> </div>'
       );
       this.messages_list_by_receiver.set(this.receiver, _messages);
     }
@@ -142,7 +139,6 @@ export class ChatComponent {
   }
 
   getReceiver(name: string) {
-    console.log('---------> ' + name);
     this.receiver = name;
 
 
@@ -153,7 +149,7 @@ export class ChatComponent {
       }
 
       _messages.push(
-        '<div class="media w-50 ml-auto mb-3"> <div class="media-body"> <div class="bg-secondary rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-white"> Chatting with: ' + this.receiver + ' </p> </div> </div> </div>'
+        '<div class="media w-100 ml-auto mb-3 text-center"> <div class="media-body"> <div class="bg-secondary rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-white"> Chatting with: ' + this.receiver + ' </p> </div> </div> </div>'
       );
       this.messages_list_by_receiver.set(this.receiver, _messages);
     }
@@ -200,6 +196,16 @@ export class ChatComponent {
     return `${day} ${month}`;
   }
 
+  formatHour(): string {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+
+    const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    return `${formattedHours}:${formattedMinutes} ${ampm}`;
+  }
 
   ngOnDestroy() {
     // Clean up when the component is destroyed

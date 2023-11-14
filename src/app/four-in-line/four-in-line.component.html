@@ -1,15 +1,75 @@
-<p>four-in-line works!</p>
-<div class="board-container">
-  <div class="board">
-    <div *ngFor="let row of match.board; let i = index" class="row">
-      <button
-        (click)="add(i, j)"
-        *ngFor="let col of row; let j = index"
-        class="cell"
-      >
-        <span *ngIf="col">{{ col }}</span>
-        <span *ngIf="!col"></span>
-      </button>
+<div class="container">
+  <div class="row">
+    <div class="col-xl-4 col-sm-12 mt-5">
+      <div *ngFor="let user of this.match.players" class="card mb-4">
+        <div
+          class="card-body"
+          [ngStyle]="{
+            'background-color': checkCurrent(user) ? '#96dba8' : ''
+          }"
+        >
+          <div class="media">
+            <img
+              src="{{user.image}}"
+              class="mr-3"
+              alt="User Avatar"
+              width="64"
+              height="64"
+            />
+            <div class="media-body">
+              <div class="row">
+                <div class="col-10">
+                  <h5 class="card-title">{{ user.name }}</h5>
+                  <p class="card-text">{{ user.email }}</p>
+                </div>
+                <div class="col-2">
+                  <div
+                    class="cell-small"
+                    [ngStyle]="{ 'background-color': user.color === 'R' ? 'red' : user.color === 'Y' ? 'yellow' : '' }"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-8 col-sm-12 mt-5">
+      <div class="board-container">
+        <div class="board" [style.opacity]="endGame ? 0.2 : 1">
+          <div
+            *ngFor="let row of this.match.boardList[0].board; let i = index"
+            class="row"
+          >
+            <button
+              (click)="doMovement(i, j)"
+              *ngFor="let col of row; let j = index"
+              class="cell rounded-circle"
+              [ngStyle]="{
+                'background-color':
+                  col === 'R' ? 'red' : col === 'Y' ? 'yellow' : '',
+                color: col === 'R' ? 'red' : col === 'Y' ? 'yellow' : 'white'
+              }"
+              [disabled]="endGame"
+            >
+              <span *ngIf="col">{{ col }}</span>
+              <span *ngIf="!col"></span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<div>
+  <div *ngIf="gameBanner" class="winner-text">
+    The winner is {{ this.match.winner?.name }}
+  </div>
+</div>
+
+<!-- Using *ngIf to toggle display (showToast = true initially) -->
+<ngb-alert #alert id="modal-alert" [type]="alertType" *ngIf="showAlert">
+  {{ messageAlert }}
+</ngb-alert>

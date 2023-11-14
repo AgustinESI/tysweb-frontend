@@ -60,8 +60,9 @@ export class RegisterComponent implements OnInit {
         (data) => {
           this.user = { ...this.user, ...data };
           localStorage.setItem('user_name', this.user.name);
-          localStorage.setItem('user_id', this.user._id);
+          localStorage.setItem('user_id', this.user.id);
           this.showSuccessAlert(this.user.name + ' is registred', 'success');
+          this.router.navigate(['']);
         },
         (error) => {
           console.log(error.error.message);

@@ -12,8 +12,7 @@
         <div class="messages-box">
           <div class="list-group rounded-0">
             <!-- Listado de personas -->
-
-            <!-- Use Angular template syntax to display the list of users -->
+            
             <div *ngFor="let user of users_list">
               <a
                 (click)="getReceiver(user.name)"
@@ -48,7 +47,7 @@
     </div>
     <!-- Chat Box-->
     <div class="col-7 px-0">
-      <div id="chat" class="px-4 py-5 chat-box bg-white">
+      <div id="chat" class="px-4 py-5 chat-box bg-white chat-box-bg">
         <div
           *ngFor="let message of messages_list_by_receiver.get(receiver)"
           [innerHTML]="message"
@@ -58,6 +57,7 @@
       <form (ngSubmit)="sendMessage()" class="bg-light">
         <div class="input-group">
           <input
+            autocomplete="off"
             type="text"
             placeholder="Type a message"
             aria-describedby="button-addon2"

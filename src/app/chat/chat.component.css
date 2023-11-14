@@ -1,15 +1,21 @@
-/*
-*
-* ==========================================
-* FOR DEMO PURPOSES
-* ==========================================
-*
-*/
 body {
   background-color: #74EBD5;
   background-image: linear-gradient(90deg, #74EBD5 0%, #9FACE6 100%);
 
   min-height: 90vh;
+}
+
+.chat-box-bg {
+  background-image: url("../../assets/bgchat.jpg");
+}
+
+.chat-box-bg::before {
+  opacity: 0.8;
+}
+
+.message-our {
+  margin-left: auto !important;
+  text-align: right;
 }
 
 ::-webkit-scrollbar {
