@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xl-4 col-sm-12 mt-5">
+      <div class="row">
+        <div *ngFor="let user of this.match.players" class="card mb-4">
+          <div class="card-body" [ngStyle]="{
+              'background-color': checkCurrent(user) ? '#96dba8' : ''
+            }">
+            <div class="media">
+              <img src="{{user.image}}" class="mr-3" alt="User Avatar" width="64" height="64" />
+              <div class="media-body">
+                <h5 class="card-title">{{ user.name }}</h5>
+                <p class="card-text">{{ user.email }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <button (click)="addColor('K')" class="cell-small ml-5" [ngStyle]="getColorStyle('K')"></button>
+        <button (click)="addColor('B')" class="cell-small ml-5" [ngStyle]="getColorStyle('B')"></button>
+        <button (click)="addColor('M')" class="cell-small ml-5" [ngStyle]="getColorStyle('M')"></button>
+        <button (click)="addColor('G')" class="cell-small ml-5" [ngStyle]="getColorStyle('G')"></button>
+        <button (click)="addColor('O')" class="cell-small ml-5" [ngStyle]="getColorStyle('O')"></button>
+        <button (click)="addColor('R')" class="cell-small ml-5" [ngStyle]="getColorStyle('R')"></button>
+        <button (click)="addColor('P')" class="cell-small ml-5" [ngStyle]="getColorStyle('P')"></button>
+        <button (click)="addColor('Y')" class="cell-small ml-5" [ngStyle]="getColorStyle('Y')"></button>
+      </div>
+    </div>
+
+    <div class="col-xl-8 col-sm-12 mt-5">
+      <div class="board-container">
+        <div class="board" [style.opacity]="endGame ? 0.2 : 1">
+          <div *ngFor="let row of this.matchAux.boardList[0].board; let i = index" class="row">
+            <ng-container *ngIf="i !== 0"> <!-- Verifica si no es la primera fila -->
+              <button *ngFor="let col of row; let j = index" [ngStyle]="getColorStyle(col)" [disabled]="endGame"
+                [ngClass]="{'cell-small': j >= 6, 'cell': j < 6}">
+                <span *ngIf="col">{{ col }}</span>
+                <span *ngIf="!col"></span>
+              </button>
+            </ng-container>
+          </div>          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div *ngIf="gameBanner" class="winner-text">
+    The winner is {{ this.match.winner?.name }}
+  </div>
+</div>
+
+<!-- Using *ngIf to toggle display (showToast = true initially) -->
+<ngb-alert #alert id="modal-alert" [type]="alertType" *ngIf="showAlert">
+  {{ messageAlert }}
+</ngb-alert>

@@ -30,7 +30,7 @@ export class FourInLineComponent {
   public messageAlert: string = '';
   public showAlert: boolean = false;
   public alertType: string = '';
-  private _values: string[] = [];
+
 
 
   constructor(private matchService: MatchService, private router: Router, private http: HttpClient) {
@@ -62,7 +62,6 @@ export class FourInLineComponent {
 
 
   doMovement(row: number, col: number) {
-    //this.match.boardList[0].board[row][col] = 'X';
     var color = '';
 
     for (var user of this.match.players) {
@@ -179,11 +178,6 @@ export class FourInLineComponent {
     this.match = { ...this.match, ...data };
     const _board: string[][] = data.boardList[0].board.map((row: string) => row.split(''));
     this.match.boardList[0].board = _board;
-
-    if (this._user_name === this.match.currentUser?.name) {
-
-    }
-
 
     if (this.match.winner) {
       this.endGame = true;

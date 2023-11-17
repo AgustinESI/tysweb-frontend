@@ -1,0 +1,141 @@
+@import "../app.component.css";
+
+
+.winner-text {
+  position: fixed;
+  top: 50%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: bold;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+  text-align: center;
+  font-size: 10vmin;
+  font-weight: 700;
+  outline: none;
+  white-space: nowrap;
+  animation: netflix_style 3.5s infinite;
+
+}
+
+@keyframes netflix_style {
+  0% {
+    text-shadow: 0px 0px transparent;
+    color: #f3f3f3;
+    transform: scale(1.5, 1.5);
+  }
+
+  10% {
+    text-shadow: 10px 15px #aaa;
+    color: #f3f3f3;
+    transform: scale(1.5, 1.5);
+  }
+
+  15% {
+    color: #f3f3f3;
+  }
+
+  20% {
+    color: #96dba8;
+    text-shadow: none;
+    transform: scale(1.1, 1.1);
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0;
+    color: #96dba8;
+    transform: scale(0.85, 0.9);
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+
+.winner-text.ng-hide {
+  opacity: 0;
+}
+
+
+.board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  margin-bottom: 10px;
+}
+
+.board {
+  background-color: rgb(252, 168, 120);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+.cell {
+  flex: 1;
+  width: 35px;
+  height: 35px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2px 4px 2px 4px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 0px;
+  font-weight: bold;
+  border: 2px solid #333; /* Color del borde */
+  border-radius: 80%; /* Radio de los bordes para hacerlo redondeado */
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0.15rem 0.15rem 1px rgba(174, 201, 214, 0.5), -0.15rem -0.15rem 1px rgba(79, 131, 156, 0.5), 0.2rem 0.2rem 0.2rem rgba(83, 86, 90, 0.3) inset;
+  
+}
+
+
+.cell-small {
+  
+  width: 16px;
+  height: 25px;
+  display: flex;
+  border: 1px solid #ccc;
+  justify-content: center;
+  align-items: center;
+  margin: 9px 2px 1px 2px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 0px;
+  font-weight: bold;
+  border: 2px solid #333; /* Color del borde */
+  border-radius: 80%; /* Radio de los bordes para hacerlo redondeado */
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0.15rem 0.15rem 1px rgba(174, 201, 214, 0.5), -0.15rem -0.15rem 1px rgba(79, 131, 156, 0.5), 0.2rem 0.2rem 0.2rem rgba(83, 86, 90, 0.3) inset;
+  z-index: 10;
+  position: relative;
+}
+
+.cell>span {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+.cell>span:nth-child(2) {
+  color: #555;
+  font-size: 14px;
+}
+
+.grey-background {
+  background-color: #9E9E9E !important;
+}

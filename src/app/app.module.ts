@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { ChatComponent } from './chat/chat.component';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
+import { MastermindComponent } from './mastermind/mastermind.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { HomeComponent } from './home/home.component';
     AlertComponent,
     LoginComponent,
     ChatComponent,
-    HomeComponent
+    HomeComponent,
+    MastermindComponent
   ],
   imports: [
     BrowserModule,
