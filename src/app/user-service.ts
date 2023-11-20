@@ -19,4 +19,11 @@ export class UserService {
   login(user: User): Observable<any> {
     return this.httpClient.put(this.baseURL + "login", user, { withCredentials: true });
   }
+
+  getUser(user_id: String): Observable<any> {
+    return this.httpClient.get(this.baseURL +  user_id, { withCredentials: true });
+  }
+  getUserImage(user_id: String): Observable<Blob> {
+    return this.httpClient.get(this.baseURL +  user_id + '/image', { responseType: 'blob' });
+  }
 }

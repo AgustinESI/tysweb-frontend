@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { User } from '../user';
 import { MessageTypesGames } from '../chat/enum';
 import { post } from 'jquery';
+import { UserService } from '../user-service';
 
 
 @Component({
@@ -32,19 +33,14 @@ export class MastermindComponent {
   public alertType: string = '';
   private _user_name: string = '';
 
-  constructor(private matchService: MatchService, private router: Router, private http: HttpClient) {
+
+  constructor(private matchService: MatchService, private router: Router, private http: HttpClient, private userService: UserService) {
     this.match = new Match();
   }
 
-  ngOnInit() {
-    if (localStorage) {
-      const _user_name_ = localStorage.getItem("user_name");
-      if (_user_name_) {
-        this._user_name = _user_name_;
-      }
-    } else {
-      alert('localStorage is not supported');
-    }
+  _profile_image: any
+
+  ngOnInit(): void {
     this.matchService.startMasterMindGame().subscribe(
       (data) => {
         this._parseBoard(data, true);
@@ -54,6 +50,19 @@ export class MastermindComponent {
         this.showSuccessAlert(error.error.message, 'danger');
       }
     );
+    
+  }
+  _getImages() {
+    for (let i = 0; i < this.match.players.length; i++) {
+      this.userService.getUserImage(this.match.players[i].id).subscribe(
+        (response: any) => {
+          this.match.players[i].image = URL.createObjectURL(response);
+          },
+          (error) => {
+            console.error('Error al obtener la imagen', error);
+          }
+        );
+  }
   }
 
   private _parseBoard(data: any, turn: boolean) {
@@ -70,7 +79,7 @@ export class MastermindComponent {
     if (position % 2 === 1) {
       i = 1;
     }
-    for (i; i < position; i = i + 2) {
+    for (i; i <= position; i = i + 2) {
       for (var j = 0; j < this.match.boardList[0].board[i].length / 2; j++) {
         this.matchAux.boardList[0].board[i][j] = '?';
       }
@@ -205,6 +214,7 @@ export class MastermindComponent {
       }
 
       this._sendMessage(JSON.stringify(msg));
+      this._getImages();
 
       if (this.match.players.length == 2) {
 

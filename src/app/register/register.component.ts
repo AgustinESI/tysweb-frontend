@@ -55,6 +55,7 @@ export class RegisterComponent implements OnInit {
       if (pwd2Value !== null && pwd2Value !== undefined) {
         this.user.pwd2 = pwd2Value;
       }
+   
 
       this.userService.register(this.user).subscribe(
         (data) => {
@@ -90,5 +91,4 @@ export class RegisterComponent implements OnInit {
     }, 5000);
 
   }
-
 }

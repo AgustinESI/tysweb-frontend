@@ -38,10 +38,14 @@
       </li>
     </ul>
   </div>
-  <div class="m-1" *ngIf="user_name">
-    <p>Login as {{ user_name }}</p>
+  <div class="m-1" *ngIf="this._user_id">
+    <p><strong>{{this._user_name}}</strong></p>
   </div>
-  <div class="m-5" *ngIf="user_name">
+  <div class="m-5" *ngIf="this._user_id">
+    
+    <span>
+      <img class="rounded-circle" src="{{this._profile_image}}" style="height : 40px; width : 40px" alt="Descripción de la imagen" width="30" height="30">
+    </span>
     <button class="btn btn-danger btn-sm" (click)="closeSession()" >
       Close <i class="fas fa-times"></i>
     </button>

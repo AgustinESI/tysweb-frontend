@@ -33,7 +33,7 @@ export class FourInLineComponent {
 
 
 
-  constructor(private matchService: MatchService, private router: Router, private http: HttpClient) {
+  constructor(private matchService: MatchService, private router: Router, private http: HttpClient, private userService : UserService) {
     this.match = new Match();
   }
 
@@ -59,7 +59,18 @@ export class FourInLineComponent {
     );
   }
 
-
+  _getImages() {
+    for (let i = 0; i < this.match.players.length; i++) {
+      this.userService.getUserImage(this.match.players[i].id).subscribe(
+        (response: any) => {
+          this.match.players[i].image = URL.createObjectURL(response);
+          },
+          (error) => {
+            console.error('Error al obtener la imagen', error);
+          }
+        );
+  }
+  }
 
   doMovement(row: number, col: number) {
     var color = '';
@@ -123,7 +134,8 @@ export class FourInLineComponent {
       }
 
       this._sendMessage(JSON.stringify(msg));
-
+      this._getImages();
+      
       if (this.match.players.length == 2) {
 
         const filteredUsers = this.match.players.filter(user => user.name !== this._user_name);

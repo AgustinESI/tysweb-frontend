@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
+import { User } from '../user';
+import { UserService } from '../user-service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -14,20 +16,30 @@ export class NavBarComponent implements OnInit {
   @ViewChild('alert')
   alert!: NgbAlert;
 
-  constructor(private router: Router, private http: HttpClient) { }
-
-  user_id: string = "";
-  user_name: string = '';
+  constructor(private userService: UserService, private router: Router, private http: HttpClient) { }
+  _user_name: string | null ='';
+  _user_id : boolean = false;
   messageAlert: string = '';
   showAlert: boolean = false;
   alertType: string = '';
 
+  _profile_image: any
+
   ngOnInit(): void {
 
     if (localStorage) {
-      const _user_name_ = localStorage.getItem("user_name");
-      if (_user_name_) {
-        this.user_name = _user_name_;
+      const _user_id_ = localStorage.getItem("user_id");
+      if (_user_id_) {
+        this._user_name = localStorage.getItem("user_name");
+        this.userService.getUserImage(_user_id_).subscribe(
+          (response: any) => {
+            this._profile_image = URL.createObjectURL(response);
+            this._user_id = true;
+            },
+            (error) => {
+              console.error('Error al obtener la imagen', error);
+            }
+          );
       }
     } else {
       console.error('localStorage is not supported');

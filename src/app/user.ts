@@ -5,5 +5,5 @@ export class User {
     pwd1!: string;
     pwd2!: string;
     color!: string;
-    image!: string;
+    image!: any;
 }
