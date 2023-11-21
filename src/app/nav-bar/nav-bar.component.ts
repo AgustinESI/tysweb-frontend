@@ -17,7 +17,7 @@ export class NavBarComponent implements OnInit {
   alert!: NgbAlert;
 
   constructor(private userService: UserService, private router: Router, private http: HttpClient) { }
-  _user_name: string | null ='';
+  user_name: string | null ='';
   _user_id : boolean = false;
   messageAlert: string = '';
   showAlert: boolean = false;
@@ -30,7 +30,7 @@ export class NavBarComponent implements OnInit {
     if (localStorage) {
       const _user_id_ = localStorage.getItem("user_id");
       if (_user_id_) {
-        this._user_name = localStorage.getItem("user_name");
+        this.user_name = localStorage.getItem("user_name");
         this.userService.getUserImage(_user_id_).subscribe(
           (response: any) => {
             this._profile_image = URL.createObjectURL(response);

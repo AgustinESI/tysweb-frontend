@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Match } from './match';
 import { UserService } from '../user-service';
-import { MessageTypesGames } from '../chat/enum';
+import { GameType, MessageTypesGames } from '../chat/enum';
 import { Movement } from './movement';
 import { User } from '../user';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
@@ -33,7 +33,7 @@ export class FourInLineComponent {
 
 
 
-  constructor(private matchService: MatchService, private router: Router, private http: HttpClient, private userService : UserService) {
+  constructor(private matchService: MatchService, private router: Router, private http: HttpClient, private userService: UserService) {
     this.match = new Match();
   }
 
@@ -48,7 +48,7 @@ export class FourInLineComponent {
       alert('localStorage is not supported');
     }
 
-    this.matchService.startFourInLineGame().subscribe(
+    this.matchService.start(GameType.FOUR_IN_LINE).subscribe(
       (data) => {
         this._parseBoard(data);
         this._manageWS();
@@ -64,12 +64,12 @@ export class FourInLineComponent {
       this.userService.getUserImage(this.match.players[i].id).subscribe(
         (response: any) => {
           this.match.players[i].image = URL.createObjectURL(response);
-          },
-          (error) => {
-            console.error('Error al obtener la imagen', error);
-          }
-        );
-  }
+        },
+        (error) => {
+          console.error('Error al obtener la imagen', error);
+        }
+      );
+    }
   }
 
   doMovement(row: number, col: number) {
@@ -81,8 +81,12 @@ export class FourInLineComponent {
       }
     }
 
+    var body = {
+      id_match: this.match.id_match,
+      combination: col
+    }
 
-    this.matchService.doMovement(new Movement(this.match.id_match, this.match.boardList[0].id_board, col, color)).subscribe(
+    this.matchService.add(JSON.stringify(body)).subscribe(
       (data) => {
         this._parseBoard(data);
 
@@ -135,7 +139,7 @@ export class FourInLineComponent {
 
       this._sendMessage(JSON.stringify(msg));
       this._getImages();
-      
+
       if (this.match.players.length == 2) {
 
         const filteredUsers = this.match.players.filter(user => user.name !== this._user_name);

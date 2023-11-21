@@ -13,3 +13,8 @@ export enum MessageTypesGames {
     ERROR_OCCURRED = 'ERROR.OCCURRED',
     GAME_SECOND_PLAYER_ADDED = 'GAME.SECOND.PLAYER.ADDED',
 }
+
+export enum GameType {
+    MASTER_MIND = 'MasterMind',
+    FOUR_IN_LINE = 'FourInLine'
+}

@@ -5,7 +5,7 @@ import { MatchService } from '../match-service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../user';
-import { MessageTypesGames } from '../chat/enum';
+import { GameType, MessageTypesGames } from '../chat/enum';
 import { post } from 'jquery';
 import { UserService } from '../user-service';
 
@@ -41,7 +41,17 @@ export class MastermindComponent {
   _profile_image: any
 
   ngOnInit(): void {
-    this.matchService.startMasterMindGame().subscribe(
+
+    if (localStorage) {
+      const _user_name_ = localStorage.getItem("user_name");
+      if (_user_name_) {
+        this._user_name = _user_name_;
+      }
+    } else {
+      alert('localStorage is not supported');
+    }
+
+    this.matchService.start(GameType.MASTER_MIND).subscribe(
       (data) => {
         this._parseBoard(data, true);
         this._manageWS();
@@ -50,19 +60,19 @@ export class MastermindComponent {
         this.showSuccessAlert(error.error.message, 'danger');
       }
     );
-    
+
   }
   _getImages() {
     for (let i = 0; i < this.match.players.length; i++) {
       this.userService.getUserImage(this.match.players[i].id).subscribe(
         (response: any) => {
           this.match.players[i].image = URL.createObjectURL(response);
-          },
-          (error) => {
-            console.error('Error al obtener la imagen', error);
-          }
-        );
-  }
+        },
+        (error) => {
+          console.error('Error al obtener la imagen', error);
+        }
+      );
+    }
   }
 
   private _parseBoard(data: any, turn: boolean) {
@@ -155,10 +165,10 @@ export class MastermindComponent {
         const colorString = this.colors.join(',');
         let json = {
           id_match: this.match.id_match,
-          colors: colorString
+          combination: colorString
         }
 
-        this.matchService.addColor(JSON.stringify(json)).subscribe(
+        this.matchService.add(JSON.stringify(json)).subscribe(
           (data) => {
             this._parseBoard(data, false);
 
