@@ -5,8 +5,9 @@
 <div class="container">
   <div class="row">
     <div class="col-xl-4 col-sm-12 mt-5">
-      <div *ngFor="let user of this.match.players" class="card mb-4">
+      <div *ngFor="let user of this.match.players; let i = index" class="card mb-4">
         <div
+          id="user_{{i}}"
           class="card-body"
           [ngStyle]="{
             'background-color': checkCurrent(user) ? '#96dba8' : ''
@@ -59,7 +60,7 @@
             *ngFor="let row of this.match.boardList[0].board; let i = index"
             class="row"
           >
-            <button
+            <button id="button{{i}}_{{j}}"
               (click)="doMovement(i, j)"
               *ngFor="let col of row; let j = index"
               class="cell rounded-circle"
