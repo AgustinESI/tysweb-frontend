@@ -16,6 +16,7 @@ import { ChatComponent } from './chat/chat.component';
 import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { MastermindComponent } from './mastermind/mastermind.component';
+import { VerificationComponent } from './verification/verification.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MastermindComponent } from './mastermind/mastermind.component';
     LoginComponent,
     ChatComponent,
     HomeComponent,
-    MastermindComponent
+    MastermindComponent,
+    VerificationComponent
   ],
   imports: [
     BrowserModule,

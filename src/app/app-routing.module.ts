@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { ChatComponent } from './chat/chat.component';
 import { HomeComponent } from './home/home.component';
 import { MastermindComponent } from './mastermind/mastermind.component';
+import { VerificationComponent } from './verification/verification.component';
 
 
 const routes: Routes = [
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'alert', component: AlertComponent },
   { path: 'chat', component: ChatComponent },
   { path: 'mastermind', component: MastermindComponent},
+  { path: 'verification',component:VerificationComponent },
   { path: '', component: HomeComponent }
 ];
 

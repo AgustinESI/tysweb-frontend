@@ -8,6 +8,7 @@ import { Movement } from './four-in-line/movement';
 })
 export class MatchService {
 
+  //private baseURL = "http://192.168.18.42:8080/matches"
   private baseURL = "http://localhost:8080/matches"
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 

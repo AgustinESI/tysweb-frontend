@@ -6,4 +6,9 @@ export class User {
     pwd2!: string;
     color!: string;
     image!: any;
+    city !: string;
+    temperature!: string;
+    active!: boolean;
+    lon!: string;
+    lat!: string;
 }

@@ -8,19 +8,19 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home</a>
+        <a class="nav-link" href="/">Home</a>
       </li>
-      <li class="nav-item">
+      <li *ngIf="!registered" class="nav-item">
         <a class="nav-link" routerLink="register">Register</a>
       </li>
-      <li>
+      <li  *ngIf="!registered">
         <a class="nav-link" routerLink="login">Login</a>
       </li>
-      <li>
+      <li *ngIf="registered">
         <a class="nav-link" routerLink="chat">Chat</a>
       </li>
 
-      <li class="nav-item dropdown">
+      <li *ngIf="registered" class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
           href="#"
@@ -39,10 +39,9 @@
     </ul>
   </div>
   <div class="m-1" *ngIf="this.user_name">
-    <p><strong>{{this.user_name}}</strong></p>
+    <p id="name-user"><strong>{{this.user_name}}</strong></p>
   </div>
   <div class="m-5" *ngIf="this.user_name">
-    
     <span>
       <img class="rounded-circle" src="{{this._profile_image}}" style="height : 40px; width : 40px" alt="Descripción de la imagen" width="30" height="30">
     </span>

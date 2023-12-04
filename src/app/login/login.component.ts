@@ -23,6 +23,8 @@ export class LoginComponent {
   messageAlert: string = '';
   showAlert: boolean = false;
   alertType: string = '';
+  private _lat: string = '';
+  private _lon: string = '';
 
   constructor(private userService: UserService, private router: Router, private http: HttpClient) { }
 
@@ -33,6 +35,33 @@ export class LoginComponent {
         this.login = true;
         this.userName = _userName;
       }
+    }
+    this.getLocation();
+  }
+
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this._lat = position.coords.latitude.toString();
+          this._lon = position.coords.longitude.toString();
+        },
+        (error) => {
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              this.showSuccessAlert('User denied the request for Geolocation.', 'danger');
+              break;
+            case error.POSITION_UNAVAILABLE:
+              this.showSuccessAlert('Location information is unavailable.', 'danger');
+              break;
+            case error.TIMEOUT:
+              this.showSuccessAlert('The request to get user location timed out.', 'danger');
+              break;
+          }
+        }
+      );
+    } else {
+      this.showSuccessAlert('Geolocation is not supported by this browser.', 'danger');
     }
   }
 
@@ -54,15 +83,29 @@ export class LoginComponent {
       if (_pwd !== null && _pwd !== undefined) {
         this.user.pwd1 = _pwd;
       }
+      
+      this.user.lat = this._lat;
+      this.user.lon = this._lon;
+
+      let msg = {
+        email : this.loginForm.get('email')?.value, 
+        pwd1 : this.loginForm.get('pwd')?.value,
+        lat : this._lat,
+        lon : this._lon
+      }
 
       this.userService.login(this.user).subscribe(
         (data) => {
           this.user = { ...this.user, ...data };
-          localStorage.setItem('user_name', this.user.name);
-          localStorage.setItem('user_id', this.user.id);
-          this.login = true;
-          this.showSuccessAlert('Login as: ' + this.user.name, 'success');
-          this.router.navigate(['']);
+
+          if (this.user.active) {
+            localStorage.setItem('user_name', this.user.name);
+            localStorage.setItem('user_id', this.user.id);
+            this.showSuccessAlert('Login as: ' + this.user.name, 'success');
+            this.login = true;
+          }
+          window.location.href = "/"
+          //this.router.navigate(['']);
         },
         (error) => {
           console.log(error.error.message);
@@ -71,7 +114,7 @@ export class LoginComponent {
       );
     } else {
       //alert('Please fill in all required fields correctly.');
-      this.showSuccessAlert('Please fill in all required fields correctly.        joputa', 'danger');
+      this.showSuccessAlert('Please fill in all required fields correctly.', 'danger');
     }
   }
 

@@ -10,7 +10,7 @@ import { UserChat } from '../user-chat';
 })
 export class ChatComponent {
 
-  private websocketURL: string = 'ws://localhost:8080/ws-chat';
+  private websocketURL: string = 'ws://192.168.18.42:8080/ws-chat';
   private ws: WebSocket | undefined;
   public user_name: string = '';
   public users_list: UserChat[] = [];

@@ -21,6 +21,7 @@ export class FourInLineComponent {
   alert!: NgbAlert;
 
   public match: Match;
+  //private websocketURL: string = 'ws://192.168.18.42:8080/ws-matches';
   private websocketURL: string = 'ws://localhost:8080/ws-matches';
   private ws: WebSocket | undefined;
   private _user_name: string = '';
@@ -46,6 +47,10 @@ export class FourInLineComponent {
       }
     } else {
       alert('localStorage is not supported');
+    }
+
+    if (!this._user_name) {
+      window.location.href = "/"
     }
 
     this.matchService.start(GameType.FOUR_IN_LINE).subscribe(

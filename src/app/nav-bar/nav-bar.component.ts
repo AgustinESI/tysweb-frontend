@@ -18,7 +18,7 @@ export class NavBarComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router, private http: HttpClient) { }
   user_name: string | null ='';
-  _user_id : boolean = false;
+  registered : boolean = false;
   messageAlert: string = '';
   showAlert: boolean = false;
   alertType: string = '';
@@ -30,11 +30,11 @@ export class NavBarComponent implements OnInit {
     if (localStorage) {
       const _user_id_ = localStorage.getItem("user_id");
       if (_user_id_) {
+        this.registered = true;
         this.user_name = localStorage.getItem("user_name");
         this.userService.getUserImage(_user_id_).subscribe(
           (response: any) => {
             this._profile_image = URL.createObjectURL(response);
-            this._user_id = true;
             },
             (error) => {
               console.error('Error al obtener la imagen', error);

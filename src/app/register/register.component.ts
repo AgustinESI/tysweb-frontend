@@ -5,6 +5,7 @@ import { UserService } from '../user-service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
+//import { PositionError, Position } from 'geolocation';
 
 
 @Component({
@@ -20,11 +21,14 @@ export class RegisterComponent implements OnInit {
   messageAlert: string = '';
   showAlert: boolean = false;
   alertType: string = '';
+  private _lon: string = '';
+  private _lat: string = '';
+
 
   constructor(private userService: UserService, private router: Router, private http: HttpClient) { }
 
   ngOnInit(): void {
-
+    this.getLocation();
   }
 
   registerForm = new FormGroup({
@@ -35,6 +39,32 @@ export class RegisterComponent implements OnInit {
   }
   )
 
+  
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this._lat = position.coords.latitude.toString();
+          this._lon = position.coords.longitude.toString();
+        },
+        (error) => {
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              this.showSuccessAlert('User denied the request for Geolocation.', 'danger');
+              break;
+            case error.POSITION_UNAVAILABLE:
+              this.showSuccessAlert('Location information is unavailable.', 'danger');
+              break;
+            case error.TIMEOUT:
+              this.showSuccessAlert('The request to get user location timed out.', 'danger');
+              break;
+          }
+        }
+      );
+    } else {
+      this.showSuccessAlert('Geolocation is not supported by this browser.', 'danger');
+    }
+  }
 
   doRegister() {
     if (this.registerForm.valid) {
@@ -55,22 +85,27 @@ export class RegisterComponent implements OnInit {
       if (pwd2Value !== null && pwd2Value !== undefined) {
         this.user.pwd2 = pwd2Value;
       }
-   
 
       this.userService.register(this.user).subscribe(
         (data) => {
           this.user = { ...this.user, ...data };
-          localStorage.setItem('user_name', this.user.name);
-          localStorage.setItem('user_id', this.user.id);
-          this.showSuccessAlert(this.user.name + ' is registred', 'success');
-          this.router.navigate(['']);
+          localStorage.setItem('active', "false");
+          this.showSuccessAlert(this.user.name + ', please check your email', 'primary');
+          if (this.user.active) {
+            localStorage.setItem('user_name', this.user.name);
+            localStorage.setItem('user_id', this.user.id);
+            window.location.href = "/"
+          }
         },
         (error) => {
-          console.log(error.error.message);
-          if (error.error.message.includes('Duplicate entry')) {
-            this.showSuccessAlert('User with name ' + this.user.email + ' already exists.', 'danger');
-          } else {
-            this.showSuccessAlert(error.error.message, 'danger');
+          if (error && error.error && error.error.message){
+            if (error.error.message.includes('Duplicate entry')) {
+              this.showSuccessAlert('User with name ' + this.user.email + ' already exists.', 'danger');
+            } else {
+              this.showSuccessAlert(error.error.message, 'danger');
+            }
+          }else{
+            this.showSuccessAlert('Error:' + error.error.message, 'danger');
           }
         }
       );

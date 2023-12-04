@@ -1,0 +1,10 @@
+<h2>Verification email</h2>
+
+<div class="spinner-border text-primary" role="status">
+    <span class="sr-only">Your account is being verified...</span>
+  </div>
+
+    <span *ngIf="validateEmail">Your account has been verified successfully!</span>
+
+    <span *ngIf="!validateEmail">Error, your account is not verified...</span>
+  

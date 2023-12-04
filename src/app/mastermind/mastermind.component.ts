@@ -25,6 +25,7 @@ export class MastermindComponent {
   public endGame: boolean = false;
   public gameBanner: boolean = false;
   private ws: WebSocket | undefined;
+  //private websocketURL: string = 'ws://192.168.18.42:8080/ws-matches';
   private websocketURL: string = 'ws://localhost:8080/ws-matches';
 
   public colors: string[] = [];
@@ -49,6 +50,9 @@ export class MastermindComponent {
       }
     } else {
       alert('localStorage is not supported');
+    }
+    if (!this._user_name) {
+      window.location.href = "/"
     }
 
     this.matchService.start(GameType.MASTER_MIND).subscribe(
