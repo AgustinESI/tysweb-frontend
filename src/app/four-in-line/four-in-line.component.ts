@@ -52,6 +52,8 @@ export class FourInLineComponent {
     if (!this._user_name) {
       window.location.href = "/"
     }
+    for (var i = 0 ; i < this.match.players.length; i ++)
+    this.match.players[i].image = this._getImages(this.match.players[i].image);
 
     this.matchService.start(GameType.FOUR_IN_LINE).subscribe(
       (data) => {
@@ -64,17 +66,25 @@ export class FourInLineComponent {
     );
   }
 
-  _getImages() {
-    for (let i = 0; i < this.match.players.length; i++) {
-      this.userService.getUserImage(this.match.players[i].id).subscribe(
-        (response: any) => {
-          this.match.players[i].image = URL.createObjectURL(response);
-        },
-        (error) => {
-          console.error('Error al obtener la imagen', error);
-        }
-      );
+  _getImages(image : String) {
+    const binaryString = atob(image.split(',')[1]);
+    var type = "jpeg"
+    if (image && image.startsWith('data:image/')) {
+      const match = image.match(/^data:image\/([a-zA-Z+]+);base64,/);
+  
+      if (match && match[1]) {
+          type = match[1];
+      }
     }
+
+    const bytes = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+
+    const blob = new Blob([bytes], { type: "image/${type}" });
+ 
+    return URL.createObjectURL(blob);
   }
 
   doMovement(row: number, col: number) {
@@ -143,12 +153,15 @@ export class FourInLineComponent {
       }
 
       this._sendMessage(JSON.stringify(msg));
-      this._getImages();
+
 
       if (this.match.players.length == 2) {
 
         const filteredUsers = this.match.players.filter(user => user.name !== this._user_name);
-
+        
+        for (var i = 0 ; i < this.match.players.length; i ++)
+        this.match.players[i].image = this._getImages(this.match.players[i].image);
+      
         let msg = {
           type: MessageTypesGames.GAME_SECOND_PLAYER_ADDED,
           id_match: this.match.id_match,
@@ -199,7 +212,8 @@ export class FourInLineComponent {
     this.match = { ...this.match, ...data };
     const _board: string[][] = data.boardList[0].board.map((row: string) => row.split(''));
     this.match.boardList[0].board = _board;
-
+    this.match.players[0].image = this._getImages(this.match.players[0].image);
+    this.match.players[1].image = this._getImages(this.match.players[1].image);
     if (this.match.winner) {
       this.endGame = true;
       this.gameBanner = true;

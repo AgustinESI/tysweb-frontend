@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from '../user';
 import { UserService } from '../user-service';
 import { Router } from '@angular/router';
@@ -18,7 +18,6 @@ export class LoginComponent {
   alert!: NgbAlert;
 
   login: boolean = false;
-  userName: string = '';
   user: User = new User();
   messageAlert: string = '';
   showAlert: boolean = false;
@@ -33,7 +32,6 @@ export class LoginComponent {
       const _userName = localStorage.getItem('user_name');
       if (_userName !== null && _userName !== undefined) {
         this.login = true;
-        this.userName = _userName;
       }
     }
     this.getLocation();
@@ -66,10 +64,11 @@ export class LoginComponent {
   }
 
   loginForm = new FormGroup({
-    email: new FormControl(''),
-    pwd: new FormControl('')
+    email: new FormControl('', [Validators.required, Validators.email]),
+    pwd: new FormControl('', Validators.required)
   }
   )
+
 
   doLogin() {
     if (this.loginForm.valid) {
@@ -83,15 +82,15 @@ export class LoginComponent {
       if (_pwd !== null && _pwd !== undefined) {
         this.user.pwd1 = _pwd;
       }
-      
+
       this.user.lat = this._lat;
       this.user.lon = this._lon;
 
       let msg = {
-        email : this.loginForm.get('email')?.value, 
-        pwd1 : this.loginForm.get('pwd')?.value,
-        lat : this._lat,
-        lon : this._lon
+        email: this.loginForm.get('email')?.value,
+        pwd1: this.loginForm.get('pwd')?.value,
+        lat: this._lat,
+        lon: this._lon
       }
 
       this.userService.login(this.user).subscribe(
@@ -103,9 +102,8 @@ export class LoginComponent {
             localStorage.setItem('user_id', this.user.id);
             this.showSuccessAlert('Login as: ' + this.user.name, 'success');
             this.login = true;
+            window.location.href = "/";
           }
-          window.location.href = "/"
-          //this.router.navigate(['']);
         },
         (error) => {
           console.log(error.error.message);
@@ -116,6 +114,7 @@ export class LoginComponent {
       //alert('Please fill in all required fields correctly.');
       this.showSuccessAlert('Please fill in all required fields correctly.', 'danger');
     }
+   
   }
 
   showSuccessAlert(_message: string, _type: string) {
