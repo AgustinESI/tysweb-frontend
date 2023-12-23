@@ -54,15 +54,12 @@ export class FourInLineComponent {
     } else {
       alert('localStorage is not supported');
     }
-
-    if (!this._user_name) {
-      window.location.href = "/"
-    }
-
+    
     document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
     const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
     this.matchService.start(GameType.FOUR_IN_LINE, headers).subscribe(
       (data) => {
+        console.log(data)
         this._parseBoard(data);
         this._manageWS();
       },
