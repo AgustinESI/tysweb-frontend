@@ -8,6 +8,7 @@ import { User } from '../user';
 import { GameType, MessageTypesGames } from '../chat/enum';
 import { post } from 'jquery';
 import { UserService } from '../user-service';
+import { UserMatchesInfo } from '../usermatchesinfo';
 
 
 @Component({
@@ -33,6 +34,8 @@ export class MastermindComponent {
   public showAlert: boolean = false;
   public alertType: string = '';
   private _user_name: string = '';
+  private _user_id: string = '';
+  private userMatchesInfo: UserMatchesInfo | undefined;
 
 
   constructor(private matchService: MatchService, private router: Router, private http: HttpClient, private userService: UserService) {
@@ -42,20 +45,27 @@ export class MastermindComponent {
   _profile_image: any
 
   ngOnInit(): void {
-
     if (localStorage) {
       const _user_name_ = localStorage.getItem("user_name");
+      const _user_id_ = localStorage.getItem("user_id");
+
       if (_user_name_) {
         this._user_name = _user_name_;
+      }
+      if (_user_id_) {
+        this._user_id = _user_id_;
       }
     } else {
       alert('localStorage is not supported');
     }
-    if (!this._user_name) {
+    /*if (!this._user_name) {
       window.location.href = "/"
-    }
+    }*/
 
-    this.matchService.start(GameType.MASTER_MIND).subscribe(
+    
+    document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+    const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+    this.matchService.start(GameType.MASTER_MIND, headers).subscribe(
       (data) => {
         this._parseBoard(data, true);
         this._manageWS();
@@ -64,17 +74,18 @@ export class MastermindComponent {
         this.showSuccessAlert(error.error.message, 'danger');
       }
     );
-    for (var i = 0 ; i < this.match.players.length; i ++)
-    this.match.players[i].image = this._getImages(this.match.players[i].image);
+    for (var i = 0; i < this.match.players.length; i++) {
+      this.match.players[i].image = this._getImages(this.match.players[i].image);
+    }
   }
-  _getImages(image : String) {
+  _getImages(image: String) {
     const binaryString = atob(image.split(',')[1]);
     var type = "jpeg"
     if (image && image.startsWith('data:image/')) {
       const match = image.match(/^data:image\/([a-zA-Z+]+);base64,/);
-  
+
       if (match && match[1]) {
-          type = match[1];
+        type = match[1];
       }
     }
 
@@ -84,7 +95,7 @@ export class MastermindComponent {
     }
 
     const blob = new Blob([bytes], { type: "image/${type}" });
- 
+
     return URL.createObjectURL(blob);
   }
 
@@ -92,7 +103,7 @@ export class MastermindComponent {
     this.match = { ...this.match, ...data };
     const _board: string[][] = data.boardList[0].board.map((row: string) => row.split(''));
     this.match.boardList[0].board = _board;
-    
+
     this.matchAux.boardList[0].board = this.match.boardList[0].board.slice();
     var position = this._getLastLine();
     if (turn) {
@@ -103,9 +114,11 @@ export class MastermindComponent {
     if (position % 2 === 1) {
       i = 1;
     }
-    for (i; i <= position; i = i + 2) {
-      for (var j = 0; j < this.match.boardList[0].board[i].length / 2; j++) {
-        this.matchAux.boardList[0].board[i][j] = '?';
+    if (i != 13) {
+      for (i; i <= position; i = i + 2) {
+        for (var j = 0; j < this.match.boardList[0].board[i].length / 2; j++) {
+          this.matchAux.boardList[0].board[i][j] = '?';
+        }
       }
     }
     if (this.match.winner) {
@@ -182,7 +195,9 @@ export class MastermindComponent {
           combination: colorString
         }
 
-        this.matchService.add(JSON.stringify(json)).subscribe(
+        document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+        const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+        this.matchService.add(JSON.stringify(json), headers).subscribe(
           (data) => {
             this._parseBoard(data, false);
 
@@ -243,8 +258,9 @@ export class MastermindComponent {
       if (this.match.players.length == 2) {
 
         const filteredUsers = this.match.players.filter(user => user.name !== this._user_name);
-        for (var i = 0 ; i < this.match.players.length; i ++)
-        this.match.players[i].image = this._getImages(this.match.players[i].image);
+        for (var i = 0; i < this.match.players.length; i++) {
+          this.match.players[i].image = this._getImages(this.match.players[i].image);
+        }
         let msg = {
           type: MessageTypesGames.GAME_SECOND_PLAYER_ADDED,
           id_match: this.match.id_match,
@@ -264,12 +280,22 @@ export class MastermindComponent {
         case MessageTypesGames.GAME_UPDATE_MATCH:
           this._getMatch();
           break;
+        case MessageTypesGames.GAME_END:
+          break;
       }
     };
 
     this.ws.onclose = (event) => {
-
+      let message = {
+        id_match: this.match.id_match,
+        name: this._user_name,
+        receiver: this._getOtherUser(),
+        type: MessageTypesGames.LEFT_MATCH
+      }
+      this._sendMessage(JSON.stringify(message));
     };
+
+
   }
   private _getMatch() {
     this.matchService.getMatch(this.match.id_match).subscribe(
@@ -291,4 +317,5 @@ export class MastermindComponent {
     }
     return position
   }
+
 }

@@ -52,7 +52,13 @@ body {
   line-height: 1.5;
   color: #212529;
   text-align: left;
-  background-color: #fff; }
+  background-color: #fff;
+}
+
+main{
+  margin-top: 50px;
+  min-height: 70vh !important;
+}
 
 [tabindex="-1"]:focus {
   outline: 0 !important; }

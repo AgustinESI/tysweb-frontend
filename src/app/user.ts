@@ -1,3 +1,5 @@
+import { UserMatchesInfo } from "./usermatchesinfo";
+
 export class User {
     id: any;
     name!: string;
@@ -11,4 +13,5 @@ export class User {
     active!: boolean;
     lon!: string;
     lat!: string;
+    userMatchesInfo: UserMatchesInfo | null = null;
 }

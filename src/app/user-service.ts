@@ -17,6 +17,7 @@ export class UserService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.httpClient.post(this.baseURL + "register", user, { headers, withCredentials: true })
   }
+
   verification(id_user: String): Observable<any> {
     return this.httpClient.get(this.baseURL + "register/activate/" + id_user, { withCredentials: true })
   }
@@ -25,9 +26,14 @@ export class UserService {
     return this.httpClient.put(this.baseURL + "login", content, { withCredentials: true });
   }
 
+  userMatchesInfo(id_user: String): Observable<any> {
+    return this.httpClient.get(this.baseURL + "matches/info/" + id_user, { withCredentials: true })
+  }
+
   getUser(user_id: String): Observable<any> {
     return this.httpClient.get(this.baseURL + user_id, { withCredentials: true });
   }
+
   getUserImage(user_id: String): Observable<Blob> {
     return this.httpClient.get(this.baseURL + user_id + '/image', { responseType: 'blob' });
   }

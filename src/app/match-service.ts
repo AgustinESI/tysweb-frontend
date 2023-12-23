@@ -14,16 +14,17 @@ export class MatchService {
 
   constructor(private httpClient: HttpClient) { }
 
-  start(type_game: string): Observable<any> {
-    return this.httpClient.get(this.baseURL + "/start/" + type_game, { headers: this.headers, withCredentials: true });
+  start(type_game: string, headers: any): Observable<any> {
+
+    return this.httpClient.get(this.baseURL + "/start/" + type_game, { headers: headers, withCredentials: true });
   }
 
   getMatch(id_match: string): Observable<any> {
     return this.httpClient.get(this.baseURL + "/board/" + id_match, { headers: this.headers, withCredentials: true });
   }
 
-  add(data: any): Observable<any> {
-    return this.httpClient.post(this.baseURL + "/add", data, { headers: this.headers, withCredentials: true })
+  add(data: any, headers: any): Observable<any> {
+    return this.httpClient.post(this.baseURL + "/add", data, { headers: headers, withCredentials: true })
   }
 
 

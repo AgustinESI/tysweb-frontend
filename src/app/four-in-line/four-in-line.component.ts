@@ -9,6 +9,7 @@ import { GameType, MessageTypesGames } from '../chat/enum';
 import { Movement } from './movement';
 import { User } from '../user';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
+import { UserMatchesInfo } from '../usermatchesinfo';
 
 @Component({
   selector: 'app-four-in-line',
@@ -25,13 +26,14 @@ export class FourInLineComponent {
   private websocketURL: string = 'ws://localhost:8080/ws-matches';
   private ws: WebSocket | undefined;
   private _user_name: string = '';
+  private _user_id: string = '';
   public endGame: boolean = false;
   public gameBanner: boolean = false;
 
   public messageAlert: string = '';
   public showAlert: boolean = false;
   public alertType: string = '';
-
+  private userMatchesInfo: UserMatchesInfo | undefined;
 
 
   constructor(private matchService: MatchService, private router: Router, private http: HttpClient, private userService: UserService) {
@@ -42,8 +44,12 @@ export class FourInLineComponent {
 
     if (localStorage) {
       const _user_name_ = localStorage.getItem("user_name");
+      const _user_id_ = localStorage.getItem("user_id");
       if (_user_name_) {
         this._user_name = _user_name_;
+      }
+      if (_user_id_) {
+        this._user_id = _user_id_;
       }
     } else {
       alert('localStorage is not supported');
@@ -52,10 +58,10 @@ export class FourInLineComponent {
     if (!this._user_name) {
       window.location.href = "/"
     }
-    for (var i = 0 ; i < this.match.players.length; i ++)
-    this.match.players[i].image = this._getImages(this.match.players[i].image);
 
-    this.matchService.start(GameType.FOUR_IN_LINE).subscribe(
+    document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+    const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+    this.matchService.start(GameType.FOUR_IN_LINE, headers).subscribe(
       (data) => {
         this._parseBoard(data);
         this._manageWS();
@@ -64,16 +70,19 @@ export class FourInLineComponent {
         this.showSuccessAlert(error.error.message, 'danger');
       }
     );
+    for (var i = 0; i < this.match.players.length; i++) {
+      this.match.players[i].image = this._getImages(this.match.players[i].image);
+    }
   }
 
-  _getImages(image : String) {
+  _getImages(image: String) {
     const binaryString = atob(image.split(',')[1]);
     var type = "jpeg"
     if (image && image.startsWith('data:image/')) {
       const match = image.match(/^data:image\/([a-zA-Z+]+);base64,/);
-  
+
       if (match && match[1]) {
-          type = match[1];
+        type = match[1];
       }
     }
 
@@ -83,7 +92,7 @@ export class FourInLineComponent {
     }
 
     const blob = new Blob([bytes], { type: "image/${type}" });
- 
+
     return URL.createObjectURL(blob);
   }
 
@@ -101,7 +110,9 @@ export class FourInLineComponent {
       combination: col
     }
 
-    this.matchService.add(JSON.stringify(body)).subscribe(
+    document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+    const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+    this.matchService.add(JSON.stringify(body), headers).subscribe(
       (data) => {
         this._parseBoard(data);
 
@@ -154,14 +165,12 @@ export class FourInLineComponent {
 
       this._sendMessage(JSON.stringify(msg));
 
-
       if (this.match.players.length == 2) {
 
         const filteredUsers = this.match.players.filter(user => user.name !== this._user_name);
-        
-        for (var i = 0 ; i < this.match.players.length; i ++)
-        this.match.players[i].image = this._getImages(this.match.players[i].image);
-      
+        for (var i = 0; i < this.match.players.length; i++) {
+          this.match.players[i].image = this._getImages(this.match.players[i].image);
+        }
         let msg = {
           type: MessageTypesGames.GAME_SECOND_PLAYER_ADDED,
           id_match: this.match.id_match,
@@ -212,8 +221,7 @@ export class FourInLineComponent {
     this.match = { ...this.match, ...data };
     const _board: string[][] = data.boardList[0].board.map((row: string) => row.split(''));
     this.match.boardList[0].board = _board;
-    this.match.players[0].image = this._getImages(this.match.players[0].image);
-    this.match.players[1].image = this._getImages(this.match.players[1].image);
+
     if (this.match.winner) {
       this.endGame = true;
       this.gameBanner = true;

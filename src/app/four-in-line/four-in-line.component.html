@@ -4,63 +4,77 @@
 />
 <div class="container">
   <div class="row">
-    <div class="col-xl-4 col-sm-12 mt-5">
-      <div *ngFor="let user of this.match.players; let i = index" class="card mb-4">
-        <div
-          id="user_{{i}}"
-          class="card-body"
-          [ngStyle]="{
-            'background-color': checkCurrent(user) ? '#96dba8' : ''
-          }"
-        >
-          <div class="media">
-            <img
-              class="rounded-circle mr-3"
-              src="{{ user.image }}"
-              alt="User Avatar"
-              width="64"
-              height="64"
-            />
-            <div class="media-body">
-              <div class="row">
-                <div class="col-10">
-                  <h5 class="card-title">{{ user.name }}</h5>
-                  <p class="card-text">
-                    <i class="bi bi-envelope"></i> {{ user.email }} <br />
-                    <i class="bi bi-geo-alt-fill" style="font-size: 1.5rem"></i>
-                    {{ user.city }} <br />
-                    <i class="bi bi-thermometer" style="font-size: 1.5rem"></i>
-                    {{ user.temperature }}
-                  </p>
+    <div class="col-xl-5 col-sm-12 mt-5">
+      <div id="user_{{i}}" *ngFor="let user of this.match.players; let i = index" class="card mb-4"  [ngClass]="{
+        'card-border': checkCurrent(user)
+      }">
+        <div class="additional" [ngClass] ="{
+          'gradient-red': user.color === 'R',
+          'gradient-yellow': user.color === 'Y'}">
+            <div class="user-card">
+                <div class="level center">
+                    {{ user.city }}
                 </div>
-                <div class="col-2">
-                  <div
-                    class="cell-small"
-                    [ngStyle]="{
-                      'background-color':
-                        user.color === 'R'
-                          ? 'red'
-                          : user.color === 'Y'
-                          ? 'yellow'
-                          : ''
-                    }"
-                  ></div>
+                <div class="points center">
+                  {{ user.temperature }}
                 </div>
-              </div>
+                <img class="mr-3 rounded-circle" alt="User Avatar"src="{{user.image}}" style="width: 80%; margin-top: 65px; margin-left: 15px;" >
+               
             </div>
-          </div>
+            <div class="more-info">
+                <h1 class="mb-4">{{ user.name }}</h1>
+
+                <div *ngFor="let umi of user.userMatchesInfo?.games">
+                  <div class="coords">
+                    <i *ngIf="umi.gametype === 'MasterMind'" class="bi bi-circle-half"></i>
+                    <i *ngIf="umi.gametype === 'FourInLine'" class="bi bi-4-circle"></i>
+                    <span>  {{ umi.gametype }}</span>
+                    <span>{{ umi.value }}/{{user.userMatchesInfo?.total}}</span>
+                  </div>
+                </div>
+                
+                
+                <div class="stats">
+                    <div>
+                      <div class="title">Matches</div>
+                      <i class="bi bi-controller"></i>
+                      <div class="value">{{user.userMatchesInfo?.total}}</div>
+                    </div>
+                    <div>
+                        <div class="title">Win</div>
+                        <i class="bi bi-trophy"></i>
+                        <div class="value">{{user.userMatchesInfo?.win}}</div>
+                    </div>
+                    <div>
+                      <div class="title">Draw</div>
+                      <i class="bi bi-x-lg"></i>
+                      <div class="value">{{user.userMatchesInfo?.draw}}</div>
+                    </div>
+                    <div>
+                        <div class="title">Lost</div>
+                        <i class="bi bi-emoji-frown"></i>
+                        <div class="value">{{user.userMatchesInfo?.lost}}</div>
+                    </div>    
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="general">
+            <h1>{{ user.name }}</h1>
+            <p class="mt-5">{{ user.email }}</p>
+            <span class="more">Mouse over the card for more info</span>
+        </div>
+    </div> 
     </div>
 
-    <div class="col-xl-8 col-sm-12 mt-5">
+    <div class="col-xl-7 col-sm-12 mt-5">
       <div class="board-container">
         <div class="board" [style.opacity]="endGame ? 0.2 : 1">
           <div
             *ngFor="let row of this.match.boardList[0].board; let i = index"
             class="row"
           >
-            <button id="button{{i}}_{{j}}"
+            <button
+              id="button{{ i }}_{{ j }}"
               (click)="doMovement(i, j)"
               *ngFor="let col of row; let j = index"
               class="cell rounded-circle"
@@ -83,8 +97,14 @@
 
 <div>
   <div *ngIf="gameBanner" class="winner-text">
-    The winner is {{ this.match.winner?.name }}
-  </div>
+    <p *ngIf="this.match.winner?.name !== 'DRAW GAME'; else drawGame">
+        The winner is {{ this.match.winner?.name }}
+    </p>
+    <ng-template #drawGame>
+        <p>Draw game</p>
+    </ng-template>
+</div>
+
 </div>
 
 <!-- Using *ngIf to toggle display (showToast = true initially) -->
