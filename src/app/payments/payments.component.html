@@ -1,1 +1,80 @@
-<p>payments works!</p>
+<div id="user-card">
+  <div id="title-img"></div>
+  <img
+    src="../../assets/user-profile.png"
+    id="profile-img"
+    alt="profile picture"
+  />
+  <div id="user-info">
+    <div id="user-creds">
+      <div class="row">
+        <div class="big-font fat-font dark-font-color">{{ user.name }}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-font light-font-color age">{{ user.email }}</div>
+    </div>
+    <div class="light-font-color">{{ user.city }} {{ user.temperature }}</div>
+  </div>
+  <hr id="line" />
+  <div id="user-data">
+    <div class="col-6">
+      <div class="big-font fat-font dark-font-color">Matches</div>
+      <div class="small-font light-font-color">{{ user.paidMatches }}</div>
+    </div>
+    <div class="col-6">
+      <button
+        [disabled]="user.paidMatches == 0"
+        type="button"
+        class="btn btn-primary"
+        routerLink="/{{ game }}"
+      >
+        Play
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1"
+          >Number of matches</span
+        >
+      </div>
+      <input
+        type="number"
+        class="form-control"
+        min="1"
+        max="20"
+        aria-label="5"
+        aria-describedby="basic-addon1"
+      />
+    </div>
+    <div class="col-6">
+      <button
+        type="button"
+        [(ngModel)]="matchesToPay"
+        class="btn btn-warning"
+        (click)="prepay()"
+      >
+        Buy+
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5">
+  
+  <form id="payment-form" style="display: none">
+    <div id="card-element"></div>
+    <button id="submit">
+      <div class="spinner hidden" id="spinner"></div>
+      <span id="button-text">Pay now</span>
+    </button>
+    <p id="card-error" role="alert"></p>
+    <p class="result-message hidden">
+      Payment succeeded, see the result in your
+      <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay
+      again.
+    </p>
+  </form>
+</div>

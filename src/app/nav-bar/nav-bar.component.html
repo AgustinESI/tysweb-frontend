@@ -53,6 +53,8 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" routerLink="4inline">4 In Line</a>
           <a class="dropdown-item" routerLink="mastermind">MasterMind</a>
+          <a class="dropdown-item" [routerLink]="['payments', 'mastermind']">MasterMind 2</a>
+          <a class="dropdown-item" [routerLink]="['payments', '4inline']">4 In Line 2</a>
         </div>
       </li>
     </ul>

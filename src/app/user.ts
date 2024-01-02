@@ -13,5 +13,6 @@ export class User {
     active!: boolean;
     lon!: string;
     lat!: string;
+    paidMatches!: number;
     userMatchesInfo: UserMatchesInfo | null = null;
 }

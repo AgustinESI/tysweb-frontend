@@ -8,6 +8,8 @@ import { ChatComponent } from './chat/chat.component';
 import { HomeComponent } from './home/home.component';
 import { MastermindComponent } from './mastermind/mastermind.component';
 import { VerificationComponent } from './verification/verification.component';
+import { PaymentsComponent } from './payments/payments.component';
+import { StripeModule } from "stripe-angular"
 
 
 const routes: Routes = [
@@ -16,13 +18,15 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'alert', component: AlertComponent },
   { path: 'chat', component: ChatComponent },
-  { path: 'mastermind', component: MastermindComponent},
-  { path: 'verification',component:VerificationComponent },
+  { path: 'mastermind', component: MastermindComponent },
+  { path: 'verification', component: VerificationComponent },
+  { path: 'payments', component: PaymentsComponent },
+  { path: 'payments/:game', component: PaymentsComponent },
   { path: '', component: HomeComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), StripeModule.forRoot("")],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
