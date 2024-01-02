@@ -10,12 +10,31 @@
       <li class="nav-item active">
         <a class="nav-link" href="/">Home</a>
       </li>
+
       <li *ngIf="!registered" class="nav-item">
         <a class="nav-link" routerLink="register">Register</a>
       </li>
       <li  *ngIf="!registered">
         <a class="nav-link" routerLink="login">Login</a>
       </li>
+
+      <li *ngIf="!registered" class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdownMenuLink"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Play as Anonymous
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" routerLink="4inline">4 In Line</a>
+          <a class="dropdown-item" routerLink="mastermind">MasterMind</a>
+        </div>
+      </li>
+      
       <li *ngIf="registered">
         <a class="nav-link" routerLink="chat">Chat</a>
       </li>

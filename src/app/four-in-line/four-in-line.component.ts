@@ -59,7 +59,6 @@ export class FourInLineComponent {
     const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
     this.matchService.start(GameType.FOUR_IN_LINE, headers).subscribe(
       (data) => {
-        console.log(data)
         this._parseBoard(data);
         this._manageWS();
       },

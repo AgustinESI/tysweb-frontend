@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './home/home.component';
 import { MastermindComponent } from './mastermind/mastermind.component';
 import { VerificationComponent } from './verification/verification.component';
+import { PaymentsComponent } from './payments/payments.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { VerificationComponent } from './verification/verification.component';
     ChatComponent,
     HomeComponent,
     MastermindComponent,
-    VerificationComponent
+    VerificationComponent,
+    PaymentsComponent
   ],
   imports: [
     BrowserModule,
