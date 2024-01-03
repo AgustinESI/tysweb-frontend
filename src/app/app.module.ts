@@ -18,6 +18,7 @@ import { HomeComponent } from './home/home.component';
 import { MastermindComponent } from './mastermind/mastermind.component';
 import { VerificationComponent } from './verification/verification.component';
 import { PaymentsComponent } from './payments/payments.component';
+import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { PaymentsComponent } from './payments/payments.component';
     HomeComponent,
     MastermindComponent,
     VerificationComponent,
-    PaymentsComponent
+    PaymentsComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

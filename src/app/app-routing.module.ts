@@ -13,6 +13,7 @@ import { StripeModule } from "stripe-angular"
 
 
 const routes: Routes = [
+  { path: '', component: HomeComponent },
   { path: '4inline', component: FourInLineComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
@@ -22,7 +23,7 @@ const routes: Routes = [
   { path: 'verification', component: VerificationComponent },
   { path: 'payments', component: PaymentsComponent },
   { path: 'payments/:game', component: PaymentsComponent },
-  { path: '', component: HomeComponent }
+  { path: '**', redirectTo: '', pathMatch:'full' }
 ];
 
 @NgModule({
