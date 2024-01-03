@@ -79,8 +79,8 @@ export class PaymentsComponent {
 
       this.paymentsService.prepay(this.matchesToPay).subscribe(
         (data) => {
-          this._client_secret = data;
-
+          this._client_secret = data.client_secret;
+          this.showForm();
         },
         (error) => {
           this.showSuccessAlert(error.error.message, 'danger');

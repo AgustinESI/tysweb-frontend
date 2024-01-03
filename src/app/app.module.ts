@@ -18,7 +18,6 @@ import { HomeComponent } from './home/home.component';
 import { MastermindComponent } from './mastermind/mastermind.component';
 import { VerificationComponent } from './verification/verification.component';
 import { PaymentsComponent } from './payments/payments.component';
-import { ModalComponent } from './modal/modal.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -45,7 +44,6 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule,
     FormsModule
   ],
-  entryComponents: [ModalComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

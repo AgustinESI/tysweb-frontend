@@ -9,7 +9,6 @@ import { HomeComponent } from './home/home.component';
 import { MastermindComponent } from './mastermind/mastermind.component';
 import { VerificationComponent } from './verification/verification.component';
 import { PaymentsComponent } from './payments/payments.component';
-import { StripeModule } from "stripe-angular"
 
 
 const routes: Routes = [
@@ -27,7 +26,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), StripeModule.forRoot("")],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
