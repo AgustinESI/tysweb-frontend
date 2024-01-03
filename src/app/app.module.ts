@@ -19,6 +19,7 @@ import { MastermindComponent } from './mastermind/mastermind.component';
 import { VerificationComponent } from './verification/verification.component';
 import { PaymentsComponent } from './payments/payments.component';
 import { ModalComponent } from './modal/modal.component';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -33,17 +34,18 @@ import { ModalComponent } from './modal/modal.component';
     HomeComponent,
     MastermindComponent,
     VerificationComponent,
-    PaymentsComponent,
-    ModalComponent
+    PaymentsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgbModalModule,
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
     FormsModule
   ],
+  entryComponents: [ModalComponent]
   providers: [],
   bootstrap: [AppComponent]
 })
