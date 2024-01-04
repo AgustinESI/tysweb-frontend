@@ -7,7 +7,7 @@ export class User {
     pwd1!: string;
     pwd2!: string;
     color!: string;
-    image!: any;
+    image!: string;
     city !: string;
     temperature!: string;
     active!: boolean;

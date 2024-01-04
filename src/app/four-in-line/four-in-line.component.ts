@@ -66,30 +66,6 @@ export class FourInLineComponent {
         this.showSuccessAlert(error.error.message, 'danger');
       }
     );
-    for (var i = 0; i < this.match.players.length; i++) {
-      this.match.players[i].image = this._getImages(this.match.players[i].image);
-    }
-  }
-
-  _getImages(image: String) {
-    const binaryString = atob(image.split(',')[1]);
-    var type = "jpeg"
-    if (image && image.startsWith('data:image/')) {
-      const match = image.match(/^data:image\/([a-zA-Z+]+);base64,/);
-
-      if (match && match[1]) {
-        type = match[1];
-      }
-    }
-
-    const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-
-    const blob = new Blob([bytes], { type: "image/${type}" });
-
-    return URL.createObjectURL(blob);
   }
 
   doMovement(row: number, col: number) {
@@ -164,9 +140,6 @@ export class FourInLineComponent {
       if (this.match.players.length == 2) {
 
         const filteredUsers = this.match.players.filter(user => user.name !== this._user_name);
-        for (var i = 0; i < this.match.players.length; i++) {
-          this.match.players[i].image = this._getImages(this.match.players[i].image);
-        }
         let msg = {
           type: MessageTypesGames.GAME_SECOND_PLAYER_ADDED,
           id_match: this.match.id_match,

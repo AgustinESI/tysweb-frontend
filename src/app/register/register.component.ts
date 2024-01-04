@@ -5,8 +5,6 @@ import { UserService } from '../user-service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
-//import { PositionError, Position } from 'geolocation';
-
 
 @Component({
   selector: 'app-register',
@@ -94,6 +92,7 @@ export class RegisterComponent implements OnInit {
           if (this.user.active) {
             localStorage.setItem('user_name', this.user.name);
             localStorage.setItem('user_id', this.user.id);
+            localStorage.setItem('user_img',this.user.image);
             window.location.href = "/"
           }
         },
@@ -110,7 +109,6 @@ export class RegisterComponent implements OnInit {
         }
       );
     } else {
-      //alert('Please fill in all required fields correctly.');
       this.showSuccessAlert('Please fill in all required fields correctly.', 'danger');
     }
   }
@@ -119,10 +117,10 @@ export class RegisterComponent implements OnInit {
   showSuccessAlert(_message: string, _type: string) {
     this.alertType = _type;
     this.messageAlert = _message;
-    this.showAlert = true; // Show the success alert
+    this.showAlert = true; 
     setTimeout(() => {
       this.showAlert = false;
-      this.alert.close(); // Automatically hide the success alert after a certain duration (e.g., 5 seconds)
+      this.alert.close(); 
     }, 5000);
 
   }

@@ -86,10 +86,10 @@
 }
 
 .card .additional .more-info {
-    width: 300px;
+    width: 400px;
     float: left;
     position: absolute;
-    left: 180px;
+    left: 150px;
     height: 100%;
 }
 
@@ -168,7 +168,7 @@
 }
 
 .card .general {
-    width: 350px;
+    width: 400px;
     height: 100%;
     position: absolute;
     top: 0;

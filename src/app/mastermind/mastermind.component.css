@@ -73,8 +73,10 @@
 }
 
 .board {
-  background-color: rgb(252, 168, 120);
-  border: 1px solid #ccc;
+  background-image: url('https://img.freepik.com/foto-gratis/fondo-suelo-textura-madera-beige_53876-104668.jpg?w=1060&t=st=1704372391~exp=1704372991~hmac=38bb58bb98daee1df5b8c2fb3c205e318db57c691188d980278c2df64ce51c15');
+  background-repeat: repeat;
+  background-size: cover;
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
   border-radius: 5px;
   padding: 20px;
 }
@@ -96,7 +98,8 @@
   cursor: pointer;
   font-size: 0px;
   font-weight: bold;
-  border: 2px solid #333; /* Color del borde */
+  border-image: linear-gradient(to left, #174e83, #45a8e6);
+  border: 2px; 
   border-radius: 80%; /* Radio de los bordes para hacerlo redondeado */
   transition: background-color 0.3s, color 0.3s;
   box-shadow: 0.15rem 0.15rem 1px rgba(174, 201, 214, 0.5), -0.15rem -0.15rem 1px rgba(79, 131, 156, 0.5), 0.2rem 0.2rem 0.2rem rgba(83, 86, 90, 0.3) inset;
@@ -115,10 +118,11 @@
   cursor: pointer;
   font-size: 0px;
   font-weight: bold;
-  border: 2px solid #333; /* Color del borde */
-  border-radius: 80%; /* Radio de los bordes para hacerlo redondeado */
+  border-image: linear-gradient(to left, #174e83, #45a8e6);
+  border: 2px; 
+  border-radius: 80%; 
   transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0.15rem 0.15rem 1px rgba(174, 201, 214, 0.5), -0.15rem -0.15rem 1px rgba(79, 131, 156, 0.5), 0.2rem 0.2rem 0.2rem rgba(83, 86, 90, 0.3) inset;
+  box-shadow:  0.2rem 1px rgba(174, 201, 214, 0.1), 0rem -0.15rem 1px rgba(79, 131, 156, 0.5), 0.2rem 0.2rem 0.2rem rgba(83, 86, 90, 0.3) inset;
   z-index: 10;
   position: relative;
 }

@@ -42,7 +42,6 @@ export class MastermindComponent {
     this.match = new Match();
   }
 
-  _profile_image: any
 
   ngOnInit(): void {
     if (localStorage) {
@@ -71,29 +70,6 @@ export class MastermindComponent {
         this.showSuccessAlert(error.error.message, 'danger');
       }
     );
-    for (var i = 0; i < this.match.players.length; i++) {
-      this.match.players[i].image = this._getImages(this.match.players[i].image);
-    }
-  }
-  _getImages(image: String) {
-    const binaryString = atob(image.split(',')[1]);
-    var type = "jpeg"
-    if (image && image.startsWith('data:image/')) {
-      const match = image.match(/^data:image\/([a-zA-Z+]+);base64,/);
-
-      if (match && match[1]) {
-        type = match[1];
-      }
-    }
-
-    const bytes = new Uint8Array(binaryString.length);
-    for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
-
-    const blob = new Blob([bytes], { type: "image/${type}" });
-
-    return URL.createObjectURL(blob);
   }
 
   private _parseBoard(data: any, turn: boolean) {
@@ -158,7 +134,9 @@ export class MastermindComponent {
       case 'Y': return { 'background': 'radial-gradient(circle at 30% 30%, #ffff21,#737313)' };
       case 'w': return { 'background': 'radial-gradient(circle at 30% 30%, #ffffff, #666666)' };
       case 'b': return { 'background': 'radial-gradient(circle at 30% 30%, #828282, #0d0d0d)' };
-      case '-': return { 'background': '#eca276' };
+      case '-': return { 'background': 'rgb(228, 210, 185)', 'box-shadow': 'rgb(179, 166, 151) 5px 5px 5px 1px inset;' };
+
+    
       case '?': return { 'font-size': '15px', 'color': 'white', 'background': 'radial-gradient(circle at 30% 30%, #fa965d, #7d492a)' };
       default: return {};
     };
@@ -255,9 +233,6 @@ export class MastermindComponent {
       if (this.match.players.length == 2) {
 
         const filteredUsers = this.match.players.filter(user => user.name !== this._user_name);
-        for (var i = 0; i < this.match.players.length; i++) {
-          this.match.players[i].image = this._getImages(this.match.players[i].image);
-        }
         let msg = {
           type: MessageTypesGames.GAME_SECOND_PLAYER_ADDED,
           id_match: this.match.id_match,

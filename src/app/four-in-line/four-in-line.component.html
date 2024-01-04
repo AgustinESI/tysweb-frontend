@@ -1,90 +1,82 @@
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css"
-/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" />
 <div class="container">
   <div class="row">
     <div class="col-xl-5 col-sm-12 mt-5">
-      <div id="user_{{i}}" *ngFor="let user of this.match.players; let i = index" class="card mb-4"  [ngClass]="{
+      <div id="user_{{i}}" *ngFor="let user of this.match.players; let i = index" class="card mb-4" [ngClass]="{
         'card-border': checkCurrent(user)
       }">
-        <div class="additional" [ngClass] ="{
+        <div class="additional" [ngClass]="{
           'gradient-red': user.color === 'R',
           'gradient-yellow': user.color === 'Y'}">
-            <div class="user-card">
-                <div class="level center">
-                    {{ user.city }}
-                </div>
-                <div class="points center">
-                  {{ user.temperature }}
-                </div>
-                <img class="mr-3 rounded-circle" alt="User Avatar"src="{{user.image}}" style="width: 80%; margin-top: 65px; margin-left: 15px;" >
-               
+          <div class="user-card">
+            <div class="level center">
+              {{ user.city }}
             </div>
-            <div class="more-info">
-                <h1 class="mb-4">{{ user.name }}</h1>
+            <div class="points center">
+              {{ user.temperature }}
+            </div>
+            <img class="mr-3" alt="User Avatar" src="{{user.image}}"
+              style="width: 80%; margin-top: 65px; margin-left: 15px;">
 
-                <div *ngFor="let umi of user.userMatchesInfo?.games">
-                  <div class="coords">
-                    <i *ngIf="umi.gametype === 'MasterMind'" class="bi bi-circle-half"></i>
-                    <i *ngIf="umi.gametype === 'FourInLine'" class="bi bi-4-circle"></i>
-                    <span>  {{ umi.gametype }}</span>
-                    <span>{{ umi.value }}/{{user.userMatchesInfo?.total}}</span>
-                  </div>
-                </div>
-                
-                
-                <div class="stats">
-                    <div>
-                      <div class="title">Matches</div>
-                      <i class="bi bi-controller"></i>
-                      <div class="value">{{user.userMatchesInfo?.total}}</div>
-                    </div>
-                    <div>
-                        <div class="title">Win</div>
-                        <i class="bi bi-trophy"></i>
-                        <div class="value">{{user.userMatchesInfo?.win}}</div>
-                    </div>
-                    <div>
-                      <div class="title">Draw</div>
-                      <i class="bi bi-x-lg"></i>
-                      <div class="value">{{user.userMatchesInfo?.draw}}</div>
-                    </div>
-                    <div>
-                        <div class="title">Lost</div>
-                        <i class="bi bi-emoji-frown"></i>
-                        <div class="value">{{user.userMatchesInfo?.lost}}</div>
-                    </div>    
-                </div>
+          </div>
+          <div class="more-info">
+            <h1 class="mb-4">{{ user.name }}</h1>
+
+            <div *ngFor="let umi of user.userMatchesInfo?.games">
+              <div class="coords">
+                <i *ngIf="umi.gametype === 'MasterMind'" class="bi bi-circle-half"></i>
+                <i *ngIf="umi.gametype === 'FourInLine'" class="bi bi-4-circle"></i>
+                <span> {{ umi.gametype }}</span>
+                <span>{{ umi.value }}/{{user.userMatchesInfo?.total}}</span>
+              </div>
             </div>
+
+
+            <div class="stats">
+              <div>
+                <div class="title">Matches</div>
+                <i class="bi bi-controller"></i>
+                <div class="value">{{user.userMatchesInfo?.total}}</div>
+              </div>
+              <div>
+                <div class="title">Win</div>
+                <i class="bi bi-trophy"></i>
+                <div class="value">{{user.userMatchesInfo?.win}}</div>
+              </div>
+              <div>
+                <div class="title">Draw</div>
+                <i class="bi bi-x-lg"></i>
+                <div class="value">{{user.userMatchesInfo?.draw}}</div>
+              </div>
+              <div>
+                <div class="title">Lost</div>
+                <i class="bi bi-emoji-frown"></i>
+                <div class="value">{{user.userMatchesInfo?.lost}}</div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="general">
-            <h1>{{ user.name }}</h1>
-            <p class="mt-5">{{ user.email }}</p>
-            <span class="more">Mouse over the card for more info</span>
+          <h1 class="mb-4">{{ user.name }}</h1>
+          <p class="mt-5">{{ user.email }}</p>
+          <span class="more"><em>Mouse over the card for more info</em></span>
         </div>
-    </div> 
+      </div>
     </div>
 
     <div class="col-xl-7 col-sm-12 mt-5">
       <div class="board-container">
         <div class="board" [style.opacity]="endGame ? 0.2 : 1">
-          <div
-            *ngFor="let row of this.match.boardList[0].board; let i = index"
-            class="row"
-          >
-            <button
-              id="button{{ i }}_{{ j }}"
-              (click)="doMovement(i, j)"
-              *ngFor="let col of row; let j = index"
-              class="cell rounded-circle"
-              [ngStyle]="{
-                'background-color':
-                  col === 'R' ? 'red' : col === 'Y' ? 'yellow' : '',
-                color: col === 'R' ? 'red' : col === 'Y' ? 'yellow' : 'white'
-              }"
-              [disabled]="endGame"
-            >
+          <div *ngFor="let row of this.match.boardList[0].board; let i = index" class="row">
+            <button id="button{{ i }}_{{ j }}" (click)="doMovement(i, j)" *ngFor="let col of row; let j = index"
+              class="cell rounded-circle" [ngStyle]="{
+                'font-size': 0,
+                'border-color': col === 'R' ? '#ca161d' : col === 'Y' ? 'yellow' : '#ca161d',
+                'background-image': col === 'R' ? 'url(../../assets/red.png)' : col === 'Y' ? 'url(../../assets/yellow.png)' : 'none',
+                'background-size': 'cover', 
+                'background-position': 'center', 
+                'background-repeat': 'no-repeat' 
+              }" [disabled]="endGame">
               <span *ngIf="col">{{ col }}</span>
               <span *ngIf="!col"></span>
             </button>
@@ -98,12 +90,12 @@
 <div>
   <div *ngIf="gameBanner" class="winner-text">
     <p *ngIf="this.match.winner?.name !== 'DRAW GAME'; else drawGame">
-        The winner is {{ this.match.winner?.name }}
+      The winner is {{ this.match.winner?.name }}
     </p>
     <ng-template #drawGame>
-        <p>Draw game</p>
+      <p>Draw game</p>
     </ng-template>
-</div>
+  </div>
 
 </div>
 

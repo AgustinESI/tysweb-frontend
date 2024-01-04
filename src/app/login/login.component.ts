@@ -86,13 +86,6 @@ export class LoginComponent {
       this.user.lat = this._lat;
       this.user.lon = this._lon;
 
-      let msg = {
-        email: this.loginForm.get('email')?.value,
-        pwd1: this.loginForm.get('pwd')?.value,
-        lat: this._lat,
-        lon: this._lon
-      }
-
       this.userService.login(this.user).subscribe(
         (data) => {
           this.user = { ...this.user, ...data };
@@ -100,6 +93,7 @@ export class LoginComponent {
           if (this.user.active) {
             localStorage.setItem('user_name', this.user.name);
             localStorage.setItem('user_id', this.user.id);
+            localStorage.setItem('user_img',this.user.image);
             this.showSuccessAlert('Login as: ' + this.user.name, 'success');
             this.login = true;
             window.location.href = "/";
@@ -111,7 +105,6 @@ export class LoginComponent {
         }
       );
     } else {
-      //alert('Please fill in all required fields correctly.');
       this.showSuccessAlert('Please fill in all required fields correctly.', 'danger');
     }
    

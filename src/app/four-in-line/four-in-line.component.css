@@ -86,8 +86,9 @@
 
 .cell {
   flex: 1;
-  width: 80px;
-  height: 80px;
+  width: 5.5vw; 
+  height: 5.5vw;
+  border-radius: 50%;
   border: 1px solid #ccc;
   display: flex;
   justify-content: center;
@@ -97,8 +98,7 @@
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
-  border: 2px solid #333; /* Color del borde */
-  border-radius: 10px; /* Radio de los bordes para hacerlo redondeado */
+  border: 2px solid #333; 
   transition: background-color 0.3s, color 0.3s;
   box-shadow: 0.15rem 0.15rem 1px rgba(174, 201, 214, 0.5), -0.15rem -0.15rem 1px rgba(79, 131, 156, 0.5), 0.2rem 0.2rem 0.2rem rgba(83, 86, 90, 0.3) inset;
 }

@@ -16,9 +16,11 @@ export class NavBarComponent implements OnInit {
   @ViewChild('alert')
   alert!: NgbAlert;
 
-  constructor(private userService: UserService, private router: Router, private http: HttpClient) { }
-  user_name: string | null ='';
-  registered : boolean = false;
+
+  constructor() { }
+  user_name: string | null = '';
+  user_image: string | null = '';
+  registered: boolean = false;
   messageAlert: string = '';
   showAlert: boolean = false;
   alertType: string = '';
@@ -32,17 +34,8 @@ export class NavBarComponent implements OnInit {
       if (_user_id_) {
         this.registered = true;
         this.user_name = localStorage.getItem("user_name");
-        this.userService.getUserImage(_user_id_).subscribe(
-          (response: any) => {
-            this._profile_image = URL.createObjectURL(response);
-            },
-            (error) => {
-              console.error('Error al obtener la imagen', error);
-            }
-          );
+        this.user_image = localStorage.getItem('user_img');
       }
-    } else {
-      console.error('localStorage is not supported');
     }
   }
 
