@@ -10,9 +10,11 @@
           'gradient-yellow': user.color === 'Y'}">
           <div class="user-card">
             <div class="level center">
+              <i class="bi bi-geo-alt-fill"></i>
               {{ user.city }}
             </div>
             <div class="points center">
+              <i class="bi bi-thermometer-half"></i>
               {{ user.temperature }}
             </div>
             <img class="mr-3" alt="User Avatar" src="{{user.image}}"
@@ -20,7 +22,7 @@
 
           </div>
           <div class="more-info">
-            <h1 class="mb-4">{{ user.name }}</h1>
+            <h1 class="mb-4"><strong>{{ user.name }}</strong></h1>
 
             <div *ngFor="let umi of user.userMatchesInfo?.games">
               <div class="coords">
@@ -53,13 +55,18 @@
                 <i class="bi bi-emoji-frown"></i>
                 <div class="value">{{user.userMatchesInfo?.lost}}</div>
               </div>
+
             </div>
           </div>
         </div>
         <div class="general">
-          <h1 class="mb-4">{{ user.name }}</h1>
-          <p class="mt-5">{{ user.email }}</p>
-          <span class="more"><em>Mouse over the card for more info</em></span>
+          <div class="row">
+            <h1 class="mb-4"><strong>{{ user.name }}</strong></h1>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-sm-6 offset-sm-1"><i class="bi bi-envelope"></i>  {{ user.email }}</div>
+          </div>
+          <span class="more"><i class="bi bi-info-circle"></i><em>  Mouse over the card for more info</em></span>
         </div>
       </div>
     </div>
@@ -71,7 +78,7 @@
             <button id="button{{ i }}_{{ j }}" (click)="doMovement(i, j)" *ngFor="let col of row; let j = index"
               class="cell rounded-circle" [ngStyle]="{
                 'font-size': 0,
-                'border-color': col === 'R' ? '#ca161d' : col === 'Y' ? 'yellow' : '#ca161d',
+                'border-color': col === 'R' ? '#ca161d' : col === 'Y' ? 'yellow' : 'rgb(18, 67, 239)',
                 'background-image': col === 'R' ? 'url(../../assets/red.png)' : col === 'Y' ? 'url(../../assets/yellow.png)' : 'none',
                 'background-size': 'cover', 
                 'background-position': 'center', 
@@ -99,7 +106,6 @@
 
 </div>
 
-<!-- Using *ngIf to toggle display (showToast = true initially) -->
 <ngb-alert #alert id="modal-alert" [type]="alertType" *ngIf="showAlert">
   {{ messageAlert }}
 </ngb-alert>

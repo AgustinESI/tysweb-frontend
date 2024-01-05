@@ -16,25 +16,7 @@
       </li>
       <li  *ngIf="!registered">
         <a class="nav-link" routerLink="login">Login</a>
-      </li>
-
-      <li *ngIf="!registered" class="nav-item dropdown">
-        <a
-          class="nav-link dropdown-toggle"
-          href="#"
-          id="navbarDropdownMenuLink"
-          data-bs-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          Play as Anonymous
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" routerLink="4inline">4 In Line</a>
-          <a class="dropdown-item" routerLink="mastermind">MasterMind</a>
-        </div>
-      </li>
-      
+      </li>   
       <li *ngIf="registered">
         <a class="nav-link" routerLink="chat">Chat</a>
       </li>
@@ -51,11 +33,12 @@
           Play
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" routerLink="4inline">4 In Line</a>
-          <a class="dropdown-item" routerLink="mastermind">MasterMind</a>
-          <a class="dropdown-item" [routerLink]="['payments', 'mastermind']">MasterMind 2</a>
-          <a class="dropdown-item" [routerLink]="['payments', '4inline']">4 In Line 2</a>
+          <a class="dropdown-item" [routerLink]="this.user_paidMatches === 0 ? 'payments' : '4inline'">4 In Line</a>
+          <a class="dropdown-item" [routerLink]="this.user_paidMatches === 0 ? 'payments' : 'mastermind'">MasterMind</a>          
         </div>
+      </li>
+      <li *ngIf="registered">
+        <a class="nav-link" routerLink="payments">Buy Credits</a>
       </li>
     </ul>
   </div>

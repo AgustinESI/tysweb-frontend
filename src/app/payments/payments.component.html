@@ -1,80 +1,62 @@
-<div id="user-card">
-  <div id="title-img"></div>
-  <img
-    src="../../assets/user-profile.png"
-    id="profile-img"
-    alt="profile picture"
-  />
-  <div id="user-info">
-    <div id="user-creds">
-      <div class="row">
-        <div class="big-font fat-font dark-font-color">{{ user.name }}</div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="small-font light-font-color age">{{ user.email }}</div>
-    </div>
-    <div class="light-font-color">{{ user.city }} {{ user.temperature }}</div>
-  </div>
-  <hr id="line" />
-  <div id="user-data">
-    <div class="col-6">
-      <div class="big-font fat-font dark-font-color">Matches</div>
-      <div class="small-font light-font-color">{{ user.paidMatches }}</div>
-    </div>
-    <div class="col-6">
-      <button
-        [disabled]="user.paidMatches == 0"
-        type="button"
-        class="btn btn-primary"
-        routerLink="/{{ game }}"
-      >
-        Play
-      </button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-6">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="basic-addon1"
-          >Number of matches</span
-        >
-      </div>
-      <input
-        type="number"
-        class="form-control"
-        [(ngModel)]="matchesToPay"
-        min="1"
-        max="20"
-        aria-label="5"
-        aria-describedby="basic-addon1"
-      />
-    </div>
-    <div class="col-6">
-      <button
-        type="button"
-        class="btn btn-warning"
-        (click)="prepay()"
-      >
-        Buy+
-      </button>
-    </div>
-  </div>
-</div>
+<div class="container" >
+  <div class="row" style="margin: top 20px;">
+    <div class="col-xl-4 col-md-4 mb-3 mb-lg-5">
+      <!--Card-->
+      <div class="card overflow-hidden text-center">
+        <img src="https://media.istockphoto.com/id/619649940/es/foto/varias-piezas-de-juego-de-mesa-en-un-tablero-de-ajedrez.jpg?s=612x612&w=0&k=20&c=_UAUrpYD77qnPXEGkO1O4Vt2pUCru3bf7f7LrEVJTQY=" class="card-img-top img-fluid" alt="">
 
-<div class="container mt-5">
-  
-  <form id="payment-form" style="display: none">
-    <div id="card-element"></div>
-    <button id="submit">
-      <div class="spinner hidden" id="spinner"></div>
-      <span id="button-text">Pay now</span>
-    </button>
-    <p id="card-error" role="alert"></p>
-    <p class="result-message hidden">
-      Payment succeeded, see the result in your
-      <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay
-      again.
-    </p>
-  </form>
-</div>
+        <!--Card body-->
+        <div class="card-body p-0">
+          <!--avatar-->
+          <a class="avatar xl rounded-circle bg-gray bg-opacity-10 p-1 position-relative mt-n5 d-block mx-auto">
+            <img src="{{ user.image }}" id="profile-img" alt="profile picture" />
+          </a>
+          <br>
+          <span class=" d-block mb-4"><strong>{{user.name}}</strong></span>
+          <div class="row mx-0 border-top border-bottom">
+            <div class="col-6 text-center border-end py-3">
+              {{user.city}}
+            </div>
+            <div class="col-6 text-center py-3">
+              {{user.temperature}}
+            </div>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item px-3 d-flex align-items-center justify-content-between">
+              <span >Available Matches</span>
+              <strong>{{user.paidMatches}}</strong>
+            </li>
+            <li class="list-group-item px-3 d-flex align-items-center justify-content-between">
+              <div class="col-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">Number of matches</span>
+                </div>
+                <input type="number" class="form-control" [(ngModel)]="matchesToPay" min="1" max="20" aria-label="5"
+                  aria-describedby="basic-addon1" />
+              </div>
+              <div class="col-6">
+                <button type="button" class="btn btn-warning" (click)="prepay()">
+                  Buy+
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-4 mb-3 mb-lg-5">
+    <form id="payment-form" style="display: none">
+      <div id="card-element"></div>
+      <button id="submit">
+        <div class="spinner hidden" id="spinner"></div>
+        <span id="button-text">Pay now</span>
+      </button>
+      <p id="card-error" role="alert"></p>
+      <p class="result-message hidden">
+        Payment succeeded, see the result in your
+        <a href="" target="_blank">Stripe dashboard.</a> Refresh the page to pay
+        again.
+      </p>
+    </form>
+    </div>
+  </div>

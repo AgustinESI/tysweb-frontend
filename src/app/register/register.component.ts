@@ -83,6 +83,9 @@ export class RegisterComponent implements OnInit {
       if (pwd2Value !== null && pwd2Value !== undefined) {
         this.user.pwd2 = pwd2Value;
       }
+      
+      this.user.lat = this._lat;
+      this.user.lon = this._lon;
 
       this.userService.register(this.user).subscribe(
         (data) => {

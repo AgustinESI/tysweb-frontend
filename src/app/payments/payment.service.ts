@@ -18,7 +18,7 @@ export class PaymentService {
   }
 
   confirm(): Observable<any> {
-    return this.httpClient.get(this.baseURL + "/confirm/", { headers: this.headers, withCredentials: true });
+    return this.httpClient.get(this.baseURL + "/confirm", { headers: this.headers, withCredentials: true });
   }
 
 }

@@ -10,7 +10,7 @@ import { UserChat } from '../user-chat';
 })
 export class ChatComponent {
 
-  private websocketURL: string = 'ws://192.168.18.42:8080/ws-chat';
+  private websocketURL: string = 'ws://localhost:8080/ws-chat';
   private ws: WebSocket | undefined;
   public user_name: string = '';
   public users_list: UserChat[] = [];
@@ -18,8 +18,7 @@ export class ChatComponent {
   public receiver: string = '';
   public messages_list_by_receiver = new Map<string, string[]>();
   public status: string = 'Disconnected';
-
-  //https://freefrontend.com/bootstrap-chats/
+  private _add: boolean = true;
 
   constructor(private route: ActivatedRoute) {
     this.ws = undefined;
@@ -39,20 +38,21 @@ export class ChatComponent {
     }
 
     this.ws = new WebSocket(this.websocketURL);
+    for (var i = 0; this.users_list.length; i++) {
 
-    this.ws.onopen = () => {
-      let msg = {
-        type: MessageTypes.INDENT,
-        name: this.user_name,
+    }
+      this.ws.onopen = () => {
+        let msg = {
+          type: MessageTypes.INDENT,
+          name: this.user_name,
+        };
+        this._sendMessage(JSON.stringify(msg));
+        this.status = 'Connected';
       };
-      this._sendMessage(JSON.stringify(msg));
-      this.status = 'Connected';
-    };
 
     this.ws.onmessage = (event) => {
       var data = event.data;
       console.log('Received message:', data);
-      // Handle received data from the WebSocket server.
       data = JSON.parse(data);
 
       if (data.type == MessageTypes.PRIVATE_MESSAGE) {
@@ -64,7 +64,7 @@ export class ChatComponent {
         if (!_messages) {
           _messages = [];
           _messages.push(
-            '<div class="media w-50 mb-3"> <img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle" /> <div class="media-body ml-3"> <div class="bg-light rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-muted"> ' + message + '</p> </div> </div> </div>'
+            '<div class="media w-50 mb-3"> <img src="https://icons.iconarchive.com/icons/iconarchive/incognito-animal-2/128/Dog-icon.png" alt="user" width="50" class="rounded-circle" /> <div class="media-body ml-3"> <div class="bg-light rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-muted"> ' + message + '</p> </div> </div> </div>'
           );
           this.messages_list_by_receiver.set(sender, _messages);
         } else {
@@ -78,6 +78,17 @@ export class ChatComponent {
         let name = data.name;
         this._addUser(name);
       }
+
+      if (data.type == MessageTypes.CLOSED_SESSION) {
+        let name = data.name;
+        let closedUser = document.getElementById(name);
+        if (closedUser) {
+          closedUser.remove();
+        } else {
+          console.log('Elemento no encontrado o ya eliminado.');
+        }
+      }
+
 
       if (data.type == MessageTypes.WELCOME) {
         let usuarios = data.users;
@@ -93,6 +104,7 @@ export class ChatComponent {
       if (this.ws) this.ws.close();
       this.users_list = this.users_list.filter((user) => user.name !== this.receiver);
       this.messages_list_by_receiver.delete(this.receiver);
+      console.log(this.users_list)
       this.receiver = '';
     };
 
@@ -121,7 +133,7 @@ export class ChatComponent {
       }
 
       _messages.push(
-        '<div class="media w-50 mb-3"><img src="https://bootstrapious.com/i/snippets/sn-chat/avatar.svg" alt="user" width="50" class="rounded-circle"> <div class="media-body ml-3"> <div class="bg-light rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-muted">' + message + '</p> </div> <p class="small text-muted">' + this.formatHour() + ' | ' + this.formatHour() + '</p> </div> </div>'
+        '<div class="media w-50 mb-3"><img src="https://icons.iconarchive.com/icons/iconarchive/incognito-animal-2/128/Cat-icon.png" alt="user" width="50" class="rounded-circle"> <div class="media-body ml-3"> <div class="bg-light rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-muted">' + message + '</p> </div> <p class="small text-muted">' + this.formatHour() + ' | ' + this.formatHour() + '</p> </div> </div>'
       );
       this.messages_list_by_receiver.set(this.receiver, _messages);
     }

@@ -50,13 +50,6 @@ export class PaymentsComponent {
       }
     }
 
-    var _game = this.route.snapshot.paramMap.get('game')
-    if (_game) {
-      this.game = _game;
-    } else {
-      this.game = '4inLine';
-    }
-
     this.userService.getUser(this._user_id).subscribe(
       (data) => {
         this.user = { ...this.user, ...data };
@@ -75,7 +68,7 @@ export class PaymentsComponent {
 
   prepay() {
 
-    if (this.matchesToPay < 20 && this.matchesToPay > 1) {
+    if (this.matchesToPay < 20 && this.matchesToPay > 0) {
 
       this.paymentsService.prepay(this.matchesToPay).subscribe(
         (data) => {
@@ -143,10 +136,11 @@ export class PaymentsComponent {
         alert(response.error.message);
       } else {
         if (response.paymentIntent.status === 'succeeded') {
+           
           alert("Pago exitoso"); self.paymentsService.confirm().subscribe({
             next: (response: any) => {
-              alert(response)
             },
+            
             error: (response: any) => {
               alert(response)
             }
@@ -154,6 +148,8 @@ export class PaymentsComponent {
         }
       }
     });
+    this.user.paidMatches += this.matchesToPay;
+    localStorage.setItem("user_paidMatches",this.user.paidMatches.toString())
   }
 
 

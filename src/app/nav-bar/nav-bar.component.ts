@@ -17,6 +17,7 @@ export class NavBarComponent implements OnInit {
   alert!: NgbAlert;
 
 
+
   constructor() { }
   user_name: string | null = '';
   user_image: string | null = '';
@@ -24,6 +25,7 @@ export class NavBarComponent implements OnInit {
   messageAlert: string = '';
   showAlert: boolean = false;
   alertType: string = '';
+  user_paidMatches: number = 0;
 
   _profile_image: any
 
@@ -35,6 +37,9 @@ export class NavBarComponent implements OnInit {
         this.registered = true;
         this.user_name = localStorage.getItem("user_name");
         this.user_image = localStorage.getItem('user_img');
+        const paidMatchesString = localStorage.getItem('user_paidMatches');
+        this.user_paidMatches = paidMatchesString ? parseInt(paidMatchesString, 10) : 0;
+
       }
     }
   }

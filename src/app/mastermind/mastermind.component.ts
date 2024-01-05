@@ -47,6 +47,7 @@ export class MastermindComponent {
     if (localStorage) {
       const _user_name_ = localStorage.getItem("user_name");
       const _user_id_ = localStorage.getItem("user_id");
+      
 
       if (_user_name_) {
         this._user_name = _user_name_;
@@ -65,6 +66,12 @@ export class MastermindComponent {
         console.log(data)
         this._parseBoard(data, true);
         this._manageWS();
+        for (var i = 0 ; i < this.match.players.length; i++){
+          if (this.match.players[i].name === this._user_name){
+            localStorage.setItem("user_paidMatches",this.match.players[i].paidMatches.toString())
+            break
+          }
+        }
       },
       (error) => {
         this.showSuccessAlert(error.error.message, 'danger');
@@ -134,7 +141,7 @@ export class MastermindComponent {
       case 'Y': return { 'background': 'radial-gradient(circle at 30% 30%, #ffff21,#737313)' };
       case 'w': return { 'background': 'radial-gradient(circle at 30% 30%, #ffffff, #666666)' };
       case 'b': return { 'background': 'radial-gradient(circle at 30% 30%, #828282, #0d0d0d)' };
-      case '-': return { 'background': 'rgb(228, 210, 185)', 'box-shadow': 'rgb(179, 166, 151) 5px 5px 5px 1px inset;' };
+      case '-': return { 'background': 'rgba(228, 210, 185, 0)', 'box-shadow': 'rgb(179, 166, 151) 5px 5px 5px 1px inset;' };
 
     
       case '?': return { 'font-size': '15px', 'color': 'white', 'background': 'radial-gradient(circle at 30% 30%, #fa965d, #7d492a)' };

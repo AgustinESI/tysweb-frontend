@@ -61,6 +61,12 @@ export class FourInLineComponent {
       (data) => {
         this._parseBoard(data);
         this._manageWS();
+        for (var i = 0 ; i < this.match.players.length; i++){
+          if (this.match.players[i].name === this._user_name){
+            localStorage.setItem("user_paidMatches",this.match.players[i].paidMatches.toString())
+            break
+          }
+        }
       },
       (error) => {
         this.showSuccessAlert(error.error.message, 'danger');
@@ -121,9 +127,6 @@ export class FourInLineComponent {
     return out;
   }
 
-
-
-
   private _manageWS() {
     this.ws = new WebSocket(this.websocketURL);
 
@@ -163,7 +166,7 @@ export class FourInLineComponent {
     };
 
     this.ws.onclose = (event) => {
-
+      
     };
   }
 

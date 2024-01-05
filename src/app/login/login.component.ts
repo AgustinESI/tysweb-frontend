@@ -94,6 +94,7 @@ export class LoginComponent {
             localStorage.setItem('user_name', this.user.name);
             localStorage.setItem('user_id', this.user.id);
             localStorage.setItem('user_img',this.user.image);
+            localStorage.setItem('user_paidMatches',this.user.paidMatches.toString());
             this.showSuccessAlert('Login as: ' + this.user.name, 'success');
             this.login = true;
             window.location.href = "/";

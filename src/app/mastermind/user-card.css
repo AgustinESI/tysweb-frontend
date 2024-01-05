@@ -22,9 +22,9 @@
 }
 
 .card-border{
-    border: 5px solid;
-    border-image: linear-gradient(to right, white, green);
+    border: 6px solid #66c618;
     border-image-slice: 1;
+    border-radius: 10px !important;
 }
 
 .card .additional {
