@@ -29,6 +29,7 @@ export class FourInLineComponent {
   private _user_id: string = '';
   public endGame: boolean = false;
   public gameBanner: boolean = false;
+  private user: User = new User();
 
   public messageAlert: string = '';
   public showAlert: boolean = false;
@@ -42,6 +43,9 @@ export class FourInLineComponent {
 
   ngOnInit() {
 
+    document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+    const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+
     if (localStorage) {
       const _user_name_ = localStorage.getItem("user_name");
       const _user_id_ = localStorage.getItem("user_id");
@@ -54,16 +58,14 @@ export class FourInLineComponent {
     } else {
       alert('localStorage is not supported');
     }
-    
-    document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
-    const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+
     this.matchService.start(GameType.FOUR_IN_LINE, headers).subscribe(
       (data) => {
         this._parseBoard(data);
         this._manageWS();
-        for (var i = 0 ; i < this.match.players.length; i++){
-          if (this.match.players[i].name === this._user_name){
-            localStorage.setItem("user_paidMatches",this.match.players[i].paidMatches.toString())
+        for (var i = 0; i < this.match.players.length; i++) {
+          if (this.match.players[i].name === this._user_name) {
+            localStorage.setItem("user_paidMatches", this.match.players[i].paidMatches.toString())
             break
           }
         }
@@ -162,11 +164,28 @@ export class FourInLineComponent {
         case MessageTypesGames.GAME_UPDATE_MATCH:
           this._getMatch();
           break;
+        case MessageTypesGames.GAME_END:
+
+          var value = {
+            id_match: this.match.id_match,
+            id_user: this._user_id
+          }
+          document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+          const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+          this.matchService.gameEnd(value, headers).subscribe(
+            (data) => {
+              this._parseBoard(data);
+            },
+            (error) => {
+              this.showSuccessAlert(error.error.message, 'danger');
+            }
+          );
+          break;
       }
     };
 
     this.ws.onclose = (event) => {
-      
+
     };
   }
 

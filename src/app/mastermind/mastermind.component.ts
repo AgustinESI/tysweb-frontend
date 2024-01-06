@@ -47,7 +47,7 @@ export class MastermindComponent {
     if (localStorage) {
       const _user_name_ = localStorage.getItem("user_name");
       const _user_id_ = localStorage.getItem("user_id");
-      
+
 
       if (_user_name_) {
         this._user_name = _user_name_;
@@ -58,7 +58,7 @@ export class MastermindComponent {
     } else {
       alert('localStorage is not supported');
     }
-    
+
     document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
     const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
     this.matchService.start(GameType.MASTER_MIND, headers).subscribe(
@@ -66,9 +66,9 @@ export class MastermindComponent {
         console.log(data)
         this._parseBoard(data, true);
         this._manageWS();
-        for (var i = 0 ; i < this.match.players.length; i++){
-          if (this.match.players[i].name === this._user_name){
-            localStorage.setItem("user_paidMatches",this.match.players[i].paidMatches.toString())
+        for (var i = 0; i < this.match.players.length; i++) {
+          if (this.match.players[i].name === this._user_name) {
+            localStorage.setItem("user_paidMatches", this.match.players[i].paidMatches.toString())
             break
           }
         }
@@ -143,7 +143,7 @@ export class MastermindComponent {
       case 'b': return { 'background': 'radial-gradient(circle at 30% 30%, #828282, #0d0d0d)' };
       case '-': return { 'background': 'rgba(228, 210, 185, 0)', 'box-shadow': 'rgb(179, 166, 151) 5px 5px 5px 1px inset;' };
 
-    
+
       case '?': return { 'font-size': '15px', 'color': 'white', 'background': 'radial-gradient(circle at 30% 30%, #fa965d, #7d492a)' };
       default: return {};
     };
@@ -260,6 +260,23 @@ export class MastermindComponent {
           this._getMatch();
           break;
         case MessageTypesGames.GAME_END:
+
+          var value = {
+            id_match: this.match.id_match,
+            id_user: this._user_id
+          }
+          document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+          const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+          this.matchService.gameEnd(value, headers).subscribe(
+            (data) => {
+
+              this._parseBoard(data, false);
+
+            },
+            (error) => {
+              this.showSuccessAlert(error.error.message, 'danger');
+            }
+          );
           break;
       }
     };

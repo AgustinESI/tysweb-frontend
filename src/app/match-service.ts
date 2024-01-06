@@ -27,5 +27,9 @@ export class MatchService {
     return this.httpClient.post(this.baseURL + "/add", data, { headers: headers, withCredentials: true })
   }
 
+  gameEnd(data: any, headers: any): Observable<any> {
+    return this.httpClient.post(this.baseURL + "/end", data, { headers: headers, withCredentials: true });
+  }
+
 
 }

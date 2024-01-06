@@ -1,6 +1,6 @@
 <div class="container" >
   <div class="row" style="margin: top 20px;">
-    <div class="col-xl-4 col-md-4 mb-3 mb-lg-5">
+    <div class="col-xl-6 col-md-6 mb-3 mb-lg-5">
       <!--Card-->
       <div class="card overflow-hidden text-center">
         <img src="https://media.istockphoto.com/id/619649940/es/foto/varias-piezas-de-juego-de-mesa-en-un-tablero-de-ajedrez.jpg?s=612x612&w=0&k=20&c=_UAUrpYD77qnPXEGkO1O4Vt2pUCru3bf7f7LrEVJTQY=" class="card-img-top img-fluid" alt="">
@@ -28,14 +28,11 @@
             </li>
             <li class="list-group-item px-3 d-flex align-items-center justify-content-between">
               <div class="col-6">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">Number of matches</span>
-                </div>
-                <input type="number" class="form-control" [(ngModel)]="matchesToPay" min="1" max="20" aria-label="5"
+                <input type="number" class="form-control" placeholder="Number of matches" [(ngModel)]="matchesToPay" min="1" max="20" aria-label="5"
                   aria-describedby="basic-addon1" />
               </div>
               <div class="col-6">
-                <button type="button" class="btn btn-warning" (click)="prepay()">
+                <button type="button" class="btn btn-warning m-1" (click)="prepay()">
                   Buy+
                 </button>
               </div>
@@ -44,7 +41,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-4 col-md-4 mb-3 mb-lg-5">
+    <div class="col-xl-6 col-md-6 mb-3 mb-lg-5 credit-card">
     <form id="payment-form" style="display: none">
       <div id="card-element"></div>
       <button id="submit">

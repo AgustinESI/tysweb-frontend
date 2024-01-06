@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700");
 @import "../app.component.css";
 
+.credit-card{
+  align-self: center;
+}
+
 .big-font {
     font-size: 1.3rem;
 }

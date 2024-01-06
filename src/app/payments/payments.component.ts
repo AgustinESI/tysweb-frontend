@@ -50,7 +50,9 @@ export class PaymentsComponent {
       }
     }
 
-    this.userService.getUser(this._user_id).subscribe(
+    document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+    const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+    this.userService.getUser(this._user_id, headers).subscribe(
       (data) => {
         this.user = { ...this.user, ...data };
       },
@@ -68,7 +70,7 @@ export class PaymentsComponent {
 
   prepay() {
 
-    if (this.matchesToPay < 20 && this.matchesToPay > 0) {
+    if (this.matchesToPay <= 20 && this.matchesToPay > 0) {
 
       this.paymentsService.prepay(this.matchesToPay).subscribe(
         (data) => {
@@ -136,11 +138,14 @@ export class PaymentsComponent {
         alert(response.error.message);
       } else {
         if (response.paymentIntent.status === 'succeeded') {
-           
+          const button = document.getElementById("submit") as HTMLButtonElement | null;
+          if (button) {
+            button.disabled = true;
+          }
           alert("Pago exitoso"); self.paymentsService.confirm().subscribe({
             next: (response: any) => {
             },
-            
+
             error: (response: any) => {
               alert(response)
             }
@@ -149,7 +154,8 @@ export class PaymentsComponent {
       }
     });
     this.user.paidMatches += this.matchesToPay;
-    localStorage.setItem("user_paidMatches",this.user.paidMatches.toString())
+    localStorage.setItem("user_paidMatches", this.user.paidMatches.toString())
+    window.location.href = "/";
   }
 
 

@@ -6,7 +6,7 @@ body {
 }
 
 .chat-box-bg {
-  background-image: url("../../assets/bgchat.jpg");
+  background-image: url("../../assets/bg-chat.jpg");
 }
 
 .chat-box-bg::before {

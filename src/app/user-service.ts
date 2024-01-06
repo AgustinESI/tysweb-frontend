@@ -8,14 +8,16 @@ import { Observable } from 'rxjs';
 
 export class UserService {
 
+
   //private baseURL = "http://192.168.18.42:8080/users/"
   private baseURL = "http://localhost:8080/users/"
+
+  private headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private httpClient: HttpClient) { }
 
   register(user: User): Observable<any> {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.httpClient.post(this.baseURL + "register", user, { headers, withCredentials: true })
+    return this.httpClient.post(this.baseURL + "register", user, { headers: this.headers, withCredentials: true })
   }
 
   verification(id_user: String): Observable<any> {
@@ -30,7 +32,12 @@ export class UserService {
     return this.httpClient.get(this.baseURL + "matches/info/" + id_user, { withCredentials: true })
   }
 
-  getUser(user_id: String): Observable<any> {
-    return this.httpClient.get(this.baseURL + user_id, { withCredentials: true });
+  getUser(user_id: String, headers: any): Observable<any> {
+    return this.httpClient.get(this.baseURL + user_id, { withCredentials: true, headers: headers });
   }
+
+  getUserByName(name: string) {
+    return this.httpClient.get(this.baseURL + "name/" + name, { withCredentials: true, headers: this.headers });
+  }
+
 }

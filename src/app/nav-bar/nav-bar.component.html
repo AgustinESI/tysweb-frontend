@@ -33,8 +33,8 @@
           Play
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" [routerLink]="this.user_paidMatches === 0 ? 'payments' : '4inline'">4 In Line</a>
-          <a class="dropdown-item" [routerLink]="this.user_paidMatches === 0 ? 'payments' : 'mastermind'">MasterMind</a>          
+          <a class="dropdown-item" [routerLink]="this.user_paidMatches <= 0 ? 'payments' : '4inline'">4 In Line</a>
+          <a class="dropdown-item" [routerLink]="this.user_paidMatches <= 0 ? 'payments' : 'mastermind'">MasterMind</a>          
         </div>
       </li>
       <li *ngIf="registered">

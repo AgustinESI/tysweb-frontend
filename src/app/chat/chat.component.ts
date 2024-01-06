@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { MessageTypes } from './enum';
 import { ActivatedRoute } from '@angular/router';
 import { UserChat } from '../user-chat';
+import { HttpClient } from '@angular/common/http';
+import { UserService } from '../user-service';
+import { NonNullAssert } from '@angular/compiler';
+import { User } from '../user';
 
 @Component({
   selector: 'app-chat',
@@ -18,37 +22,38 @@ export class ChatComponent {
   public receiver: string = '';
   public messages_list_by_receiver = new Map<string, string[]>();
   public status: string = 'Disconnected';
-  private _add: boolean = true;
+  private user_id: string = '';
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private userService: UserService, private http: HttpClient) {
     this.ws = undefined;
     this.input_message = undefined;
   }
 
 
   ngOnInit() {
-
     if (localStorage) {
       const _user_name_ = localStorage.getItem("user_name");
+      const _user_id_ = localStorage.getItem("user_id");
       if (_user_name_) {
         this.user_name = _user_name_;
+      }
+      if (_user_id_) {
+        this.user_id = _user_id_;
       }
     } else {
       alert('localStorage is not supported');
     }
 
     this.ws = new WebSocket(this.websocketURL);
-    for (var i = 0; this.users_list.length; i++) {
 
-    }
-      this.ws.onopen = () => {
-        let msg = {
-          type: MessageTypes.INDENT,
-          name: this.user_name,
-        };
-        this._sendMessage(JSON.stringify(msg));
-        this.status = 'Connected';
+    this.ws.onopen = () => {
+      let msg = {
+        type: MessageTypes.INDENT,
+        name: this.user_name,
       };
+      this._sendMessage(JSON.stringify(msg));
+      this.status = 'Connected';
+    };
 
     this.ws.onmessage = (event) => {
       var data = event.data;
@@ -61,10 +66,11 @@ export class ChatComponent {
         let message = "<strong>" + sender + "</strong>: " + content;
 
         let _messages = this.messages_list_by_receiver.get(sender);
+        var senderUser = this.users_list.filter((user) => user.name == sender)
         if (!_messages) {
           _messages = [];
           _messages.push(
-            '<div class="media w-50 mb-3"> <img src="https://icons.iconarchive.com/icons/iconarchive/incognito-animal-2/128/Dog-icon.png" alt="user" width="50" class="rounded-circle" /> <div class="media-body ml-3"> <div class="bg-light rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-muted"> ' + message + '</p> </div> </div> </div>'
+            '<div class="media w-50 mb-3"> <img src="' + senderUser[0].image + '" alt="user" width="50" class="rounded-circle" /> <div class="media-body ml-3"> <div class="bg-light rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-muted"> ' + message + '</p> </div> </div> </div>'
           );
           this.messages_list_by_receiver.set(sender, _messages);
         } else {
@@ -81,6 +87,14 @@ export class ChatComponent {
 
       if (data.type == MessageTypes.CLOSED_SESSION) {
         let name = data.name;
+        const indice = this.users_list.findIndex(u => u.name === name);
+
+        if (indice !== -1) {
+          this.users_list.splice(indice, 1);
+          this.messages_list_by_receiver.delete(name)
+        }
+
+        this.receiver = "";
         let closedUser = document.getElementById(name);
         if (closedUser) {
           closedUser.remove();
@@ -101,13 +115,16 @@ export class ChatComponent {
     };
 
     this.ws.onclose = (event) => {
-      if (this.ws) this.ws.close();
-      this.users_list = this.users_list.filter((user) => user.name !== this.receiver);
-      this.messages_list_by_receiver.delete(this.receiver);
-      console.log(this.users_list)
-      this.receiver = '';
+
     };
 
+  }
+
+  clearUser(user_name: string) {
+    if (this.ws) this.ws.close();
+    this.users_list = this.users_list.filter((user) => user.name !== user_name);
+    this.messages_list_by_receiver.delete(user_name);
+    this.receiver = '';
   }
 
   _printMessageOur(message: string) {
@@ -131,9 +148,9 @@ export class ChatComponent {
       if (!_messages) {
         _messages = [];
       }
-
+      var receiverUser = this.users_list.filter((user) => user.name == this.receiver)
       _messages.push(
-        '<div class="media w-50 mb-3"><img src="https://icons.iconarchive.com/icons/iconarchive/incognito-animal-2/128/Cat-icon.png" alt="user" width="50" class="rounded-circle"> <div class="media-body ml-3"> <div class="bg-light rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-muted">' + message + '</p> </div> <p class="small text-muted">' + this.formatHour() + ' | ' + this.formatHour() + '</p> </div> </div>'
+        '<div class="media w-50 mb-3"><img src="' + receiverUser[0].image + '" alt="user" width="50" class="rounded-circle"> <div class="media-body ml-3"> <div class="bg-light rounded py-2 px-3 mb-2"> <p class="text-small mb-0 text-muted">' + message + '</p> </div> <p class="small text-muted">' + this.formatHour() + ' | ' + this.formatHour() + '</p> </div> </div>'
       );
       this.messages_list_by_receiver.set(this.receiver, _messages);
     }
@@ -145,6 +162,19 @@ export class ChatComponent {
 
   _addUser(name: string) {
     let _user = new UserChat();
+
+    this.userService.getUserByName(name).subscribe(
+      (data) => {
+        var user = new User();
+        user = { ...user, ...data };
+        _user.image = user.image
+      },
+      (error) => {
+        alert('User not found');
+      }
+    );
+
+
     _user.name = name;
     _user.date = this.formatDate(new Date());
     this.users_list.push(_user);
@@ -152,8 +182,6 @@ export class ChatComponent {
 
   getReceiver(name: string) {
     this.receiver = name;
-
-
     if (this.receiver) {
       let _messages = this.messages_list_by_receiver.get(this.receiver);
       if (!_messages) {
