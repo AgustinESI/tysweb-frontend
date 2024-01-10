@@ -10,6 +10,7 @@ import { Movement } from './movement';
 import { User } from '../user';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { UserMatchesInfo } from '../usermatchesinfo';
+declare var bootstrap : any;
 
 @Component({
   selector: 'app-four-in-line',
@@ -239,6 +240,16 @@ export class FourInLineComponent {
       return true;
     }
     return false;
+  }
+
+  openModal() {
+    var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+    myModal.show();
+  }
+
+  closeModal() {
+    var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+    myModal.hide();
   }
 
 }

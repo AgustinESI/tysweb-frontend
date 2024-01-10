@@ -9,7 +9,7 @@ import { GameType, MessageTypesGames } from '../chat/enum';
 import { post } from 'jquery';
 import { UserService } from '../user-service';
 import { UserMatchesInfo } from '../usermatchesinfo';
-
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-mastermind',
@@ -28,7 +28,7 @@ export class MastermindComponent {
   private ws: WebSocket | undefined;
   //private websocketURL: string = 'ws://192.168.18.42:8080/ws-matches';
   private websocketURL: string = 'ws://localhost:8080/ws-matches';
-
+  isModalOpen = false;
   public colors: string[] = [];
   public messageAlert: string = '';
   public showAlert: boolean = false;
@@ -312,6 +312,17 @@ export class MastermindComponent {
         break;
     }
     return position
+  }
+
+
+  openModal() {
+    var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+    myModal.show();
+  }
+
+  closeModal() {
+    var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+    myModal.hide();
   }
 
 }
