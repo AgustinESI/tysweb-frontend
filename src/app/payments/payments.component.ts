@@ -30,8 +30,9 @@ export class PaymentsComponent {
   private _user_name: string = '';
   private _user_id: string = '';
   private _client_secret: string = '';
-
-  constructor(private route: ActivatedRoute, private paymentsService: PaymentService, private userService: UserService, private router: Router, private http: HttpClient) { }
+  
+  constructor(private route: ActivatedRoute, private paymentsService: PaymentService, private userService: UserService, private router: Router, private http: HttpClient) { 
+  }
 
   ngOnInit(): void {
     if (localStorage != null) {
@@ -57,7 +58,7 @@ export class PaymentsComponent {
         this.user = { ...this.user, ...data };
       },
       (error) => {
-        this.showSuccessAlert(error.error.message, 'danger');
+        //this.showSuccessAlert(error.error.message, 'danger');
       }
     );
 
@@ -78,11 +79,11 @@ export class PaymentsComponent {
           this.showForm();
         },
         (error) => {
-          this.showSuccessAlert(error.error.message, 'danger');
+          //this.showSuccessAlert(error.error.message, 'danger');
         }
       );
     } else {
-      this.showSuccessAlert('Not valid number of matches', 'danger');
+      //this.showSuccessAlert('Not valid number of matches', 'danger');
     }
   }
 
