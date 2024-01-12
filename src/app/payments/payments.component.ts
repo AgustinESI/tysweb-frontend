@@ -30,8 +30,8 @@ export class PaymentsComponent {
   private _user_name: string = '';
   private _user_id: string = '';
   private _client_secret: string = '';
-  
-  constructor(private route: ActivatedRoute, private paymentsService: PaymentService, private userService: UserService, private router: Router, private http: HttpClient) { 
+
+  constructor(private route: ActivatedRoute, private paymentsService: PaymentService, private userService: UserService, private router: Router, private http: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class PaymentsComponent {
         this.user = { ...this.user, ...data };
       },
       (error) => {
-        //this.showSuccessAlert(error.error.message, 'danger');
+        this.showSuccessAlert(error.error.message, 'danger');
       }
     );
 
@@ -79,11 +79,11 @@ export class PaymentsComponent {
           this.showForm();
         },
         (error) => {
-          //this.showSuccessAlert(error.error.message, 'danger');
+          this.showSuccessAlert(error.error.message, 'danger');
         }
       );
     } else {
-      //this.showSuccessAlert('Not valid number of matches', 'danger');
+      this.showSuccessAlert('Not valid number of matches', 'danger');
     }
   }
 
@@ -143,21 +143,22 @@ export class PaymentsComponent {
           if (button) {
             button.disabled = true;
           }
-          alert("Pago exitoso"); self.paymentsService.confirm().subscribe({
+          self.paymentsService.confirm().subscribe({
             next: (response: any) => {
-            },
+              self.user.paidMatches += self.matchesToPay;
+              localStorage.setItem("user_paidMatches", self.user.paidMatches.toString());
+              self.showSuccessAlert('Successfull payment', 'info');
+              setTimeout(() => {
+                window.location.href = "/";
+              }, 2000);
 
+            },
             error: (response: any) => {
-              alert(response)
+              self.showSuccessAlert('Error trying to confirm the payment', 'danger');
             }
           })
         }
       }
     });
-    this.user.paidMatches += this.matchesToPay;
-    localStorage.setItem("user_paidMatches", this.user.paidMatches.toString())
-    window.location.href = "/";
   }
-
-
 }
