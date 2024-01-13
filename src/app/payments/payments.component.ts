@@ -72,8 +72,9 @@ export class PaymentsComponent {
   prepay() {
 
     if (this.matchesToPay <= 20 && this.matchesToPay > 0) {
-
-      this.paymentsService.prepay(this.matchesToPay).subscribe(
+      document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+      const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+      this.paymentsService.prepay(this.matchesToPay,headers).subscribe(
         (data) => {
           this._client_secret = data.client_secret;
           this.showForm();

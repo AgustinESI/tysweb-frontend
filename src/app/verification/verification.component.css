@@ -1,0 +1,27 @@
+.error-message {
+    background: linear-gradient(#f52d2e, #ffb356);
+    padding: 50px;
+    text-align: center;
+    font-size: 30px;
+    border-radius: 5px;
+    transition: width 0.4s;
+    border-image-slice: 1;
+    border-radius: 10px !important;
+    margin: 20px 80px 20px 80px;
+}
+
+.info-message {
+    background: linear-gradient(#009e9b, #8bf5ac);
+    padding: 50px;
+    text-align: center;
+    font-size: 30px;
+    border-radius: 5px;
+    transition: width 0.4s;
+    border-image-slice: 1;
+    border-radius: 10px !important;
+    margin: 20px 80px 20px 80px;
+}
+
+.content {
+    min-height: 70vh !important;
+}

@@ -1,10 +1,20 @@
-<h2>Verification email</h2>
-
-<div class="spinner-border text-primary" role="status">
-    <span class="sr-only">Your account is being verified...</span>
+<div class="content">
+  <div class="container d-flex justify-content-center">
+    <div class="row justify-content-center">
+      <h2 class="text-center mt-5" style="color: #034078">
+        Verification email
+      </h2>
+      <div class="loading text-center m-5">
+        <img src="./../assets/loading.gif" alt="Loading" class="mx-auto" />
+      </div>
+      <p class="m-5 text-center">Your account is being verified...</p>
+    </div>
   </div>
 
-    <span *ngIf="validateEmail">Your account has been verified successfully!</span>
-
-    <span *ngIf="!validateEmail">Error, your account is not verified...</span>
-  
+  <div class="info-message" *ngIf="validateEmail == 'true'">
+    <span>Your account has been verified successfully!</span>
+  </div>
+  <div class="error-message" *ngIf="validateEmail == 'false'">
+    <span>Error, your account is not verified...</span>
+  </div>
+</div>

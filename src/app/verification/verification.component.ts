@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class VerificationComponent {
   _user: User = new User();
-  public validateEmail: boolean = false;
+  public validateEmail: string = "none";
   private _paramId: string = '';
 
   constructor(private userService: UserService, private http: HttpClient, private route: ActivatedRoute) {
@@ -32,9 +32,12 @@ export class VerificationComponent {
           setTimeout(() => {
             localStorage.setItem('user_name', this._user.name);
             localStorage.setItem('user_id', this._user.id);
-            localStorage.setItem('active', "true");
-            this.validateEmail = true;
-            window.location.href = "/";
+            localStorage.setItem('user_img',this._user.image);
+            localStorage.setItem('user_paidMatches',this._user.paidMatches.toString());
+            this.validateEmail = "true";
+            setTimeout(() => {
+              window.location.href = "/";
+            }, 2000);
           }, 5000);
 
         },

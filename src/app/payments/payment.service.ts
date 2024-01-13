@@ -13,8 +13,8 @@ export class PaymentService {
 
   constructor(private httpClient: HttpClient) { }
 
-  prepay(matches: number): Observable<any> {
-    return this.httpClient.get(this.baseURL + "/prepay/"+matches, { headers: this.headers, withCredentials: true });
+  prepay(matches: number, headers: any): Observable<any> {
+    return this.httpClient.get(this.baseURL + "/prepay/"+matches, { headers: headers, withCredentials: true });
   }
 
   confirm(): Observable<any> {
