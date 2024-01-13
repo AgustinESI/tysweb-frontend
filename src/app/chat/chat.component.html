@@ -53,9 +53,9 @@
         ></div>
       </div>
       <!-- Typing area -->
-      <form (ngSubmit)="sendMessage()" class="bg-light">
-        <div class="input-group">
-          <input id="send_msg_button"
+      <form (ngSubmit)="sendMessage()" class="bg-light align-items-start">
+        <div class="input-group ">
+          <input
             autocomplete="off"
             type="text"
             placeholder="Type a message"
@@ -65,8 +65,8 @@
             name="input_message"
           />
           <div class="input-group-append">
-            <button id="button-addon2" type="submit" class="btn btn-link mt-3">
-              <i class="fa fa-paper-plane"></i>
+            <button id="button-addon2" type="submit" class="btn btn-link mt-4" title="Send">
+              <i class="bi bi-send"></i>
             </button>
           </div>
         </div>
