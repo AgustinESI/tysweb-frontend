@@ -7,33 +7,33 @@
     <div class="row justify-content-center">
       <div class="col-md-12 col-lg-10">
         <div class="wrap d-md-flex">
-          <img src="../../assets/logo-no-bg.png" alt="" class="img-fluid" />
+          <img src="../../assets/logo.gif" style="height: 65%; width: 65%;" class="img-fluid" />
           <div class="login-wrap p-4 p-md-5">
             <form [formGroup]="registerForm" (ngSubmit)="doRegister()" class="mt-4" autocomplete="off"
               id="register-form">
               <h1 class="h3 mb-3 fw-normal">Register</h1>
               <div class="form-floating">
                 <input type="text" class="form-control" formControlName="name" id="floatingInputName" />
-                <label for="floatingUsername">Username</label> <br>
+                <label for="floatingUsername"><i class="bi bi-person-fill"></i>  Username</label> <br>
               </div>
 
               <div class="form-floating">
                 <input type="email" required class="form-control" formControlName="email" id="floatingInputEmail" />
-                <label for="floatingEmail">Email</label><br>
+                <label for="floatingEmail"><i class="bi bi-envelope-fill"></i>  Email</label><br>
               </div>
 
               <div class="form-floating">
                 <input type="password" class="form-control" formControlName="pwd1" id="floatingPassword1" />
-                <label for="floatingPassword1">Password 1</label>
+                <label for="floatingPassword1"><i class="bi bi-lock-fill"></i>  Password 1</label>
               </div>
 
               <div class="form-floating mt-4 mb-4">
                 <input type="password" class="form-control" formControlName="pwd2" id="floatingPassword2" />
-                <label for="floatingPassword2">Password 2</label>
+                <label for="floatingPassword2"><i class="bi bi-lock-fill"></i>  Password 2</label>
               </div>
 
               <button class="w-100 btn btn-lg btn-primary" type="submit" id="register">
-                Register
+                <i class="bi bi-person-add"></i>  Register
               </button>
             </form>
             <p class="text-center">Already a member? <a class="nav-link" routerLink="/login">Sign in</a></p>
