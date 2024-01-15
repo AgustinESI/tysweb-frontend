@@ -44,9 +44,6 @@ export class FourInLineComponent {
 
   ngOnInit() {
 
-    document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
-    const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
-
     if (localStorage) {
       const _user_name_ = localStorage.getItem("user_name");
       const _user_id_ = localStorage.getItem("user_id");
@@ -59,6 +56,9 @@ export class FourInLineComponent {
     } else {
       alert('localStorage is not supported');
     }
+
+    document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+    const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
 
     this.matchService.start(GameType.FOUR_IN_LINE, headers).subscribe(
       (data) => {

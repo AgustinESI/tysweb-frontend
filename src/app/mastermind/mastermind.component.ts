@@ -198,6 +198,8 @@ export class MastermindComponent {
           }
         );
       }
+    }else{
+      this.showSuccessAlert('Ilegal movement, not your turn', 'warning')
     }
   }
   private _getOtherUser() {
