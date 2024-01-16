@@ -10,7 +10,7 @@ import { Movement } from './movement';
 import { User } from '../user';
 import { NgbAlert } from '@ng-bootstrap/ng-bootstrap';
 import { UserMatchesInfo } from '../usermatchesinfo';
-declare var bootstrap : any;
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-four-in-line',
@@ -167,20 +167,22 @@ export class FourInLineComponent {
           break;
         case MessageTypesGames.GAME_END:
 
-          var value = {
-            id_match: this.match.id_match,
-            id_user: this._user_id
-          }
-          document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
-          const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
-          this.matchService.gameEnd(value, headers).subscribe(
-            (data) => {
-              this._parseBoard(data);
-            },
-            (error) => {
-              this.showSuccessAlert(error.error.message, 'danger');
+          if (data.name == this._getOtherUser()) {
+            var value = {
+              id_match: this.match.id_match,
+              id_user: this._user_id
             }
-          );
+            document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+            const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+            this.matchService.gameEnd(value, headers).subscribe(
+              (data) => {
+                this._parseBoard(data);
+              },
+              (error) => {
+                this.showSuccessAlert(error.error.message, 'danger');
+              }
+            );
+          }
           break;
       }
     };

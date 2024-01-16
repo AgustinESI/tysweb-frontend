@@ -198,7 +198,7 @@ export class MastermindComponent {
           }
         );
       }
-    }else{
+    } else {
       this.showSuccessAlert('Ilegal movement, not your turn', 'warning')
     }
   }
@@ -262,23 +262,24 @@ export class MastermindComponent {
           this._getMatch();
           break;
         case MessageTypesGames.GAME_END:
-
-          var value = {
-            id_match: this.match.id_match,
-            id_user: this._user_id
-          }
-          document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
-          const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
-          this.matchService.gameEnd(value, headers).subscribe(
-            (data) => {
-
-              this._parseBoard(data, false);
-
-            },
-            (error) => {
-              this.showSuccessAlert(error.error.message, 'danger');
+          if (data.name == this._getOtherUser()) {
+            var value = {
+              id_match: this.match.id_match,
+              id_user: this._user_id
             }
-          );
+            document.cookie = "id_user=" + this._user_id + "; expires=Thu, 01 Jan 2099 00:00:00 GMT; path=/";
+            const headers = { 'Content-Type': 'application/json', 'Cookie': document.cookie };
+            this.matchService.gameEnd(value, headers).subscribe(
+              (data) => {
+
+                this._parseBoard(data, false);
+
+              },
+              (error) => {
+                this.showSuccessAlert(error.error.message, 'danger');
+              }
+            );
+          }
           break;
       }
     };
